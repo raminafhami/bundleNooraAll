@@ -1,0 +1,278 @@
+<html dir="rtl" lang="fa-IR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Description</title>
+    <link href="https://cdn.naitco.ir/fonts/vazirmatn/non-latin/font-face.css" rel="stylesheet" />
+    <script src="https://cdn.naitco.ir/js/tailwindcss/tailwindcss-v3.4.5.min.js"></script>
+    <style>
+      * {
+        border-width: 0;
+      }
+
+      html,
+      body {
+        font-family: "Vazirmatn";
+        background-color: white;
+        print-color-adjust: exact;
+      }
+
+      .template {
+        background-color: rgb(243, 244, 246);
+      }
+
+      .template .page {
+        overflow: hidden;
+        display: block;
+        margin: 0 auto;
+        font-size: 13px;
+        background-color: white;
+      }
+
+      .template .page:not(:last-of-type) {
+        border-bottom: 1px solid rgb(229, 231, 235);
+      }
+
+      .template .page[data-size="A4"] {
+        width: 21cm;
+        /* height: 29.7cm; */
+      }
+
+      .page table,
+      .page tbody,
+      .page tr,
+      .page th,
+      .page td {
+        border: 1px solid;
+      }
+
+      .page th {
+        padding-block: 4px;
+        background-color: #f2f2f2;
+      }
+
+      .page td {
+        padding: 2px 6px;
+      }
+
+      .header,
+      .header-space {
+        height: 240px;
+        background-color: white;
+      }
+
+      .footer,
+      .footer-space {
+        height: 230px;
+        background-color: white;
+      }
+
+      .footer-space {
+        position: relative;
+        z-index: 999;
+      }
+
+      .header {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+      }
+
+      .footer {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+      }
+
+      @media print {
+        .template .page table th,
+        .template .page table td {
+          break-inside: avoid;
+        }
+
+        .template .page {
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- prettier-ignore -->
+    <div class="hidden">
+    <%
+      const digitsEn = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+      const digitsFa = ["۰", "١", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+
+      function toPersianNum(text) {
+        let result = '';
+
+        for (let i = 0; i < text.length; i++) {
+          if (/^\d+$/.test(text.charAt(i))) {
+            result += digitsFa[digitsEn.indexOf(text.charAt(i))];
+          } else {
+            result += text.charAt(i);
+          }
+        }
+
+        return result;
+      }
+    %>
+    </div>
+    <!-- prettier-ignore -->
+
+    <div class="template">
+      <table class="border-none" cellspacing="0" cellpadding="0">
+        <thead><tr><td>
+          <div class="header-space">&nbsp;</div>
+        </td></tr></thead>
+        <tbody><tr><td>
+            <div class="page flex px-[60px] text-xs/5 flex-col" data-size="A4">    
+              <div class="mb-1.5">
+                <div class="flex gap-x-3">
+                  <div class="font-bold basis-20 shrink-0">جایگاه سازمانی</div>
+                  <div>:</div>
+                  <div><%= department %></div>
+                </div>
+        
+                <div class="flex gap-x-3">
+                  <div class="font-bold basis-20 shrink-0">گزارش دهی به</div>
+                  <div>:</div>
+                  <div><%= supervisor %></div>
+                </div>
+        
+                <div class="flex gap-x-3">
+                  <div class="font-bold basis-20 shrink-0">تعریف شغل</div>
+                  <div>:</div>
+                  <div><%= definition %></div>
+                </div>
+              </div>
+      
+              <div>
+                <table class="w-full border-collapse text-xs/5">
+                  <colgroup>
+                    <col class="w-1/6" />
+                    <col class="w-1/6" />
+                    <col class="w-1/6" />
+                    <col class="w-1/6" />
+                    <col class="w-1/6" />
+                    <col class="w-1/6" />
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <th colspan="100">شرایط احراز</th>
+                    </tr>
+                    <tr>
+                      <th colspan="3">مدرک تحصیلی</th>
+                      <th>تجربه کاری مرتبط</th>
+                      <th>سابقه بازرسی مرتبط</th>
+                      <th>نتیجه بررسی</th>
+                    </tr>
+                    <% for (let i = 0; i < degrees.length; i++) { %>
+                      <tr><td class="text-center" colspan="3"><%= degrees[i] %></td>
+                      <% if (i === 0) { %>
+                        <td class="text-center" rowspan="<%= degrees.length %>">
+                          <%= experience.unrelated ? isNaN(experience.unrelated) ? experience.unrelated.trim() : `${experience.unrelated} ماه` : '-' %>
+                        </td>
+                        <td class="text-center" rowspan="<%= degrees.length %>">
+                          <%= experience.related ? isNaN(experience.related) ? experience.related.trim() : `${experience.related} ماه` : '-' %>
+                        </td>
+                        <td rowspan="<%= degrees.length %>"></td>
+                      <% } %>
+                      </tr>
+                    <% } %>
+                    <tr>
+                      <th colspan="100">
+                        آموزش
+                      </th>
+                    </tr>
+                    <% for (let i = 0; i < certificates.length; i++) { %>
+                      <tr><td colspan="5"><%= certificates[i] %></td><td></td></tr>
+                    <% } %>
+                    <tr>
+                      <th colspan="100">
+                        مهارت
+                      </th>
+                    </tr>
+                    <% for (let i = 0; i < skills.length; i++) { %>
+                      <tr><td colspan="5"><%= skills[i] %></td><td></td></tr>
+                    <% } %>
+                    <tr>
+                      <th colspan="100">
+                        دانش فنی
+                      </th>
+                    </tr>
+                    <% for (let i = 0; i < knowledges.length; i++) { %>
+                      <tr><td colspan="5"><%= knowledges[i] %></td><td></td></tr>
+                    <% } %>
+                    <tr>
+                      <th colspan="100">
+                        شرح وظایف و مسئولیت ها
+                      </th>
+                    </tr>
+                    <% for (let i = 0; i < duties.length; i++) { %>
+                      <tr><td colspan="100"><%= duties[i] %></td></tr>
+                    <% } %>
+                    <tr>
+                      <th colspan="100">
+                        اختیارات
+                      </th>
+                    </tr>
+                    <% if (authorities.length !== 0) { for (let i = 0; i < authorities.length; i++) { %>
+                      <tr><td colspan="100"><%= authorities[i] %></td></tr>
+                    <% } } else { %>
+                      <tr><td colspan="100">-</td></tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </td></tr></tbody>
+        <tfoot><tr><td>
+          <div class="footer-space pt-4">
+            <div class="flex mx-[60px] border border-black text-xs/5">
+              <div class="relative h-24 px-1.5 py-0.5 border-e border-black basis-1/3 shrink-0">
+                <div>نام و نام خانوادگی:</div>
+                <div>امضاء:</div>
+                <div class="absolute size-24 end-6 bottom-0">
+                  <% if (personnelSignature) { %>
+                    <img src="<%= personnelSignature %>" width="96" height="96" />
+                  <% } %>
+                </div>
+              </div>
+              <div class="relative h-24 px-1.5 py-0.5 basis-2/3 shrink-0">
+                <div>نتیجه بررسی صورت گرفته:</div>
+                <div>امضاء مدیر تضمین کیفیت / مدیر بازرسی کالا:</div>
+                <div class="absolute size-24 end-28 bottom-0">
+                  <% if (approverSignature) { %>
+                    <img src="<%= approverSignature %>" width="96" height="96" />
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td></tr></tfoot>
+      </table>
+
+      <div class="header flex items-center justify-center">
+        <div class="w-fit mx-auto text-sm/6">
+          <h1 class="mb-4 text-center text-lg">شرح شغل سازمانی</h1>
+          <div class="text-center">کد شناسایی: <%= code %></div>
+          <div class="text-center">عنوان شغل: <%= name %></div>
+          <div class="text-center">
+            <% if (goodsInspectionField) { %>
+            حوزه بازرسی کالا: <%= goodsInspectionField %>
+            <% } else { %>
+              &nbsp;
+            <% } %>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer"></div>
+    </div>
+  </body>
+</html>

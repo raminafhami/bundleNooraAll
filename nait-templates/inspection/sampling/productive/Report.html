@@ -1,0 +1,720 @@
+<!-- prettier-ignore -->
+
+<html dir="rtl" lang="fa">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>گزارش بازدید و نمونه برداری</title>
+    <link href="https://cdn.naitco.ir/fonts/vazirmatn/non-latin/font-face.css" rel="stylesheet" />
+    <script src="https://cdn.naitco.ir/js/tailwindcss/tailwindcss-v3.4.5.min.js"></script>
+    <style>
+      * {
+        border-width: 0;
+      }
+
+      html,
+      body {
+        font-family: "Vazirmatn";
+        print-color-adjust: exact;
+      }
+
+      .template {
+        background: rgb(243, 244, 246);
+      }
+
+      .template .page {
+        overflow: hidden;
+        display: block;
+        margin: 0 auto;
+        font-size: 13px;
+        background-color: white;
+      }
+
+      .template .page:not(:last-of-type) {
+        border-bottom: 1px solid rgb(229, 231, 235);
+      }
+
+      .template .page[data-size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+      }
+
+      @media print {
+        .template .page {
+          margin: 0;
+        }
+      }
+
+      th {
+        border-left: 1px solid black;
+        font-size: 12px;
+        font-weight: 300;
+        padding: 8px 4px;
+      }
+
+      td {
+        padding: 8px 4px;
+        text-align: center;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <%
+
+    const digitsEn = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    const digitsFa = ["۰", "١", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"]
+    function toPersianNum(text) {
+      let result = '';
+      for (let i = 0; i < text.length; i++) {
+        if (/^\d+$/.test(text.charAt(i))) {
+          result += digitsFa[digitsEn.indexOf(text.charAt(i))]
+        } else {
+          result += text.charAt(i);
+        }
+      }
+      return result;
+    }
+  
+    function getProductsNames(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += (products[product].ProductName ? products[product].Model : "") + ' - ' + (products[product].ProductType ? products[product].ProductType : "")
+      }
+      return result;
+    }
+
+    function getProductsModels(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].Model ? products[product].Model : ""
+      }
+      return result;
+    }
+
+    function getProductsBrands(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].Brand ? products[product].Brand : ""
+      }
+      return result;
+    }
+
+    function getProductsManufactureDates(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].ManufactureDate ? products[product].ManufactureDate : ""
+      }
+      return result;
+    }
+
+    function getProductsPackageNo(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].PackageNo ? products[product].PackageNo : ""
+      }
+      return result;
+    }
+
+    function getProductsBuildNo(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].BuildNo ? products[product].BuildNo : ""
+      }
+      return result;
+    }
+
+    function getProductsSealNo(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].SealNo ? products[product].SealNo : "-"
+      }
+      return result;
+    }
+
+    function getProductsSmallLabelNo(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].SmallLabelNo ? products[product].SmallLabelNo : "-"
+      }
+      return result;
+    }
+
+    function getProductsSmallLabelNo(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].SmallLabelNo ? products[product].SmallLabelNo : "-"
+      }
+      return result;
+    }
+
+    function getProductsBigLabelNo(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].BigLabelNo ? products[product].BigLabelNo : "-"
+      }
+      return result;
+    }
+
+    function getProductsConstructionSeries(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].ConstructionSeries ? products[product].ConstructionSeries : ""
+      }
+      return result;
+    }
+    
+    function getSampleAmount(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += (products[product].SampleAmount ? products[product].SampleAmount : "") + (products[product].Unit ? products[product].Unit : "")
+      }
+      return result;
+    }
+
+    function getPhysicalCharacteristics(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += (products[product].PhysicalCharacteristics ? products[product].PhysicalCharacteristics : "")
+      }
+      return result;
+    }
+
+    function getProductsMaintenance(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].Maintenance ? products[product].Maintenance : ""
+      }
+      return result;
+    }
+
+    function getProductsControlSampleSealNo(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].ControlSampleSealNo ? products[product].ControlSampleSealNo : "-"
+      }
+      return result;
+    }
+
+    function getProductsControlSampleSmallLabelNo(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].ControlSampleSmallLabelNo ? products[product].ControlSampleSmallLabelNo : "-"
+      }
+      return result;
+    }
+
+    function getProductsControlSampleBigLabelNo(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].ControlSampleBigLabelNo ? products[product].ControlSampleBigLabelNo : "-"
+      }
+      return result;
+    }
+
+    function getProductsDescription(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += products[product].Descriptions ? products[product].Descriptions : ""
+      }
+      return result;
+    }
+
+    function getProductsCodes() {
+      const uniqueProductNames = Array.from(new Set(ProductsData?.flatMap((i) =>
+        (i?.PackingType?.length && i?.PackingType?.map((entry) => entry?.ProductName)) || []
+      )));
+
+      const result = uniqueProductNames?.map((productName) => {
+        const entries = ProductsData?.flatMap((i) =>
+          i?.PackingType?.filter((entry) => entry?.ProductName === productName) || []
+        );
+
+        const codes = entries
+          ?.flatMap((entry) => entry?.codes || [])
+          ?.map((code) => `NAIT${code}`)
+          ?.join(", ");
+
+        return `${codes}`;
+      })?.join(" - ");
+
+      return result;
+    };
+
+    function getControlSampleCodes() {
+      const uniqueProductNames = Array.from(new Set(ProductsData?.flatMap((i) =>
+        (i?.ControlSample?.length && i?.ControlSample?.flatMap((entry) =>
+        entry?.length
+          ? entry?.map((subEntry) => subEntry?.ProductName)
+          : ""
+        )) || []
+      )));
+
+      const result = uniqueProductNames?.map((productName) => {
+        const entries = ProductsData?.flatMap((i) =>
+          i?.ControlSample?.flatMap((entry) =>
+            entry?.length
+            ? entry?.filter((subEntry) => subEntry?.ProductName === productName)
+            : ""
+          ) || []
+        );
+
+        const codes = entries
+          ?.flatMap((entry) => entry?.codes || [])
+          ?.map((code) => `NAIT${code}`)
+          ?.join(", ");
+
+        return `${codes}`;
+
+      }).join(" - ");
+
+      return result;
+    };
+  %>
+
+  <body>
+    <div class="template">
+      <div data-template="preinvoice">
+        <div class="page" data-size="A4">
+          <div class="m-5 mb-1">
+            <div class="flex justify-between">
+              <div class="pb-2">
+                <img src="data:image/png;base64,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
+  " alt="logo" width="80px" height="80px"> 
+                </div>
+              <div class="text-center mb-4">
+                <div class="text-3xl">نورا آزما بین الملل</div>
+                <div class="text-xl">بازرسی و خدمات آزمایشگاهی</div>
+                <div class="text-lg">گزارش بازدید و نمونه برداری</div>
+              </div>
+              <div>
+                <div>تاریخ: <span id="time"></span></div>
+                <div>شماره: <%= caseNo %></div>
+              </div>
+            </div>
+            <div class="border border-black text-xs">
+              <div class="flex border-b border-black">
+                <div class="border-l border-black w-1/2 p-1">
+                  بارکد فیزیکی نمونه:
+                </div>
+                <div class="w-1/2 p-1">بارکد سامانه: <%= typeof SystemBarcode !== 'undefined' && SystemBarcode ? SystemBarcode : "" %> </div>
+              </div>
+              <div class="border-b border-black p-2 leading-5">
+                <div>
+                  نام و نشانی واحد نمونه برداری شده: <%= BuyerName %> - <%= BuyerAddress %>
+                </div>
+                <div>تاریخ نمونه برداری: <%= Date %></div>
+                <div class="flex gap-10">
+                  <span>محل نمونه برداری: </span>
+                  <span class="flex items-center gap-1">
+                    <input
+                      type="checkbox"
+                      id="place_1"
+                      onclick="return false;"
+                      class="accent-black"
+                      <% if (typeof Place !== 'undefined' && Place === "خط تولید کارخانه") { %> checked <% } %>
+                    />
+                    <label for="1">خط تولید کارخانه</label>
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <input
+                      type="checkbox"
+                      id="place_2"
+                      onclick="return false;"
+                      class="accent-black"
+                      <% if (typeof Place !== 'undefined' && Place === "انبار واحد تولیدی") { %> checked <% } %>
+                    />
+                    <label for="2">انبار واحد تولیدی</label>
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <input
+                      type="checkbox"
+                      id="place_3"
+                      onclick="return false;"
+                      class="accent-black"
+                      <% if (typeof Place !== 'undefined' && Place === "انبار عرضه کننده") { %> checked <% } %>
+                    />
+                    <label for="3">انبار عرضه کننده</label>
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <input
+                      type="checkbox"
+                      id="place_4"
+                      onclick="return false;"
+                      class="accent-black"
+                      <% if (typeof Place !== 'undefined' && Place === "فروشگاه (بازار)") { %> checked <% } %>
+                    />
+                    <label for="4">فروشگاه (بازار)</label>
+                  </span>
+                </div>
+                <div class="flex gap-10">
+                  <span>نوع:</span>
+                  <span class="flex items-center gap-1">
+                    <input
+                      type="checkbox"
+                      id="type_1"
+                      onclick="return false;"
+                      class="accent-black"
+                      <% if (typeof Type !== 'undefined' && Type === "امانی") { %> checked <% } %>
+                    />
+                    <label for="5">امانی</label>
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <input
+                      type="checkbox"
+                      id="type_1"
+                      onclick="return false;"
+                      class="accent-black"
+                      <% if (typeof Type !== 'undefined' && Type === "غیر امانی") { %> checked <% } %>
+                    />
+                    <label for="6">غیر امانی</label>
+                  </span>
+                </div>
+              </div>
+              <!-- ********************* -->
+              <div class="border-b border-black p-2 leading-5">
+                <div>مشخصات نمونه:</div>
+                <div class="flex justify-between items-center">
+                  <span class="w-1/2">
+                    نام و نوع محصول: <%= getProductsNames(ProductsData) %>
+                  </span>
+
+                  <span class="w-1/2">
+                    مدل/جزئیات: <%= getProductsModels(ProductsData) %>
+                  </span>
+                </div>
+
+                <div class="flex justify-between items-center">
+                  <div class="w-1/2"
+                    >نام یا علامت تجاری: <%= getProductsBrands(ProductsData) %>
+                  </div>
+                  <div class="w-1/2"
+                    >تاریخ تولید: <%= getProductsManufactureDates(ProductsData) %>
+                  </div>
+                </div>
+
+                <div class="flex justify-between items-center gap-1 w-full">
+                  <div class="flex items-center gap-1 w-1/2">
+                    <span class="min-w-fit"
+                      >شماره پروانه بهداشتی بسته بندی:</span
+                    >
+                    <span
+                      class="grow inline-block border border-black rounded-md px-2"
+                    >
+                      <%= getProductsPackageNo(ProductsData) %>
+                    </span>
+                  </div>
+                  <div class="flex items-center gap-1 w-1/2">
+                    <span class="min-w-fit"> شماره پروانه بهداشتی ساخت:</span>
+                    <span
+                      class="grow inline-block border border-black rounded-md px-2"
+                    >
+                      <%= getProductsBuildNo(ProductsData) %>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex justify-between items-center">
+                  <span class="w-1/2"> پلمپ: <%= getProductsCodes() %> </span>
+                  <span class="w-1/2">
+                    سری ساخت: <%= getProductsConstructionSeries(ProductsData) %>
+                  </span>
+                </div>
+
+                <div class="pb-2">
+                  سایر ملاحظات - شماره کوتاژ - مقدار و مشخصات فیزیکی (رنگ،
+                  اندازه، نوع بسته بندی و ........): <br />
+
+                  <% getSampleAmount(ProductsData) %> - <% getPhysicalCharacteristics(ProductsData) %>
+                  <br />
+                  شرایط نگهداری: <%= getProductsMaintenance(ProductsData) %>
+                </div>
+              </div>
+              <div class="border-b border-black p-2 leading-5">
+                <div class="flex justify-between">
+                  <div
+                    >نمونه شاهد با شماره: <%= getControlSampleCodes() %>
+                  </div>
+                  <div class="flex items-center gap-2 ml-16">
+                    <span> به صاحب کالا تحویل داده </span>
+                    <span class="flex items-center gap-1">
+                      <input type="checkbox" id="delivered_1" class="accent-black" <% if (ProductsData.length > 0 && ProductsData[0].Delivered === "true") { %> checked <% } %> readonly />
+                      <label for="delivered_1">شد</label>
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <input type="checkbox" id="delivered_2" class="accent-black" <% if (ProductsData.length > 0 && ProductsData[0].Delivered === "false") { %> checked <% } %> readonly />
+                      <label for="delivered_2">نشد</label>
+                    </span>
+                  </div>
+                </div>
+                <span class="flex items-center gap-1">
+                  <input type="checkbox" id="delivered_3" class="accent-black" <% if (ProductsData.length > 0 && ProductsData[0].ControlSample[0]?.status === "false") { %> checked <% } %> />
+                  <label for="delivered_3">
+                    یا صاحب کالا مایل به احذ نمونه شاهد، تحویل و نگهداری آن
+                    نبوده و حق اعتراض را از خود سلب می‌نماید.
+                  </label>
+                </span>
+              </div>
+              <div class="border-b border-black p-2 leading-5">
+                توضیحات: <%= getProductsDescription(ProductsData) %>
+              </div>
+
+              <!-- ********************* -->
+              <div class="border-b border-black flex leading-5">
+                <div class="p-2 border-l border-black w-1/3">
+                  نام و نام خانوادگی نمونه بردار: <%= SamplerName %> <br />
+                  <% if (typeof SamplerSignature !== 'undefined' && SamplerSignature) { %>
+                    <img
+                      class="mx-auto"
+                      src="<%= SamplerSignature %>"
+                      alt="SamplerSignature"
+                      width="100px"
+                      height="100px"
+                    />
+                  <% } else { %>
+                    <div class="w-[100px] h-[100px] mx-auto"></div>
+                  <% } %>
+                </div>
+                <div class="p-2  border-l border-black w-1/3">
+                  نام و نام خانوادگی مدیر/ نماینده واحد تولیدی:  <%= typeof ProductionUnitName !== 'undefined' && ProductionUnitName ? ProductionUnitName : '' %> <br />
+                  <% if (typeof ProductiveSignature !== 'undefined' && ProductiveSignature) { %>
+                    <img
+                      class="mx-auto"
+                      src="<%= ProductiveSignature %>"
+                      alt="ProductiveSignature"
+                      width="100px"
+                      height="100px"
+                    />
+                  <% } else { %>
+                    <div class="w-[100px] h-[100px] mx-auto"></div>
+                  <% } %>
+                </div>
+                <div class="p-2 w-1/3">
+                  نام و نام خانوادگی مدیر کنترل کیفیت: <%= typeof QcName !== 'undefined' && QcName ? QcName : '' %> <br />
+                  <% if (typeof QcSignature !== 'undefined' && QcSignature) { %>
+                    <img
+                    class="mx-auto"
+                      src="<%= QcSignature %>"
+                      alt="QcSignature"
+                      width="100px"
+                      height="100px"/>
+                  <% } else { %>
+                    <div class="w-[100px] h-[100px] mx-auto"></div>
+                  <% } %>
+                </div>
+              </div>
+              <div class="border-b border-black p-2 leading-5">
+                مدیر محترم آزمایشگاه <%= LaboratoryManager %> نمونه با مشخصات
+                فوق جهت انجام آزمون‌های مربوطه برطبق استاندارهای ملی ارسال
+                میگردد و خواهشمند است ضمن اخذ هزینه‌های مربوطه از صاحب کالا
+                دستور فرمایید نتایج را به اداره کل استاندارد استان ارسال
+                فرمایید.
+              </div>
+              <div class="border-b border-black p-2 leading-5">
+                <div class="text-center pb-2">صورتحساب نمونه برداری</div>
+                <div>
+                  هزینه نمونه برداری با احتساب مالیات بر ارزش افزوده مبلغ <%= toPersianNum(Math.round(InspectionFeeInRial * 1.1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")) %> ریال می‌باشد.
+                </div>
+                <div class="flex items-center gap-2">
+                  <span>پرداخت</span>
+                  <span class="flex items-center gap-1">
+                    <input type="checkbox" class="accent-black"  onclick="return false;" />
+                    <label for="10">شد</label>
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <input type="checkbox" class="accent-black"  onclick="return false;" />
+                    <label for="11">نشد</label>
+                  </span>
+                </div>
+                <div class="leading-5">
+                  خواهشمند است مبلغ فوق را به شماره حساب ۱۷۱۸۰۰۱۸۵۴۰۲ یا شماره
+                  کارت ۵۸۹۲۱۰۷۰۴۴۰۲۲۴۷۶ شماره شبا IR۰۸۰۱۵۰۰۰۰۰۰۰۱۷۱۸۰۰۱۸۵۴۰۲
+                  بانک سپه به نام "شرکت نورآزما بین الملل" واریز و فیش واریزی را
+                  با درج نام واحد تولیدی، به شماره فکس ۰۲۱-۹۱۳۰۴۵۰۰ یا به شماره
+                  ایتا ۰۹۱۹۸۱۱۴۴۵۰ ارسال نمایید.
+                </div>
+              </div>
+              <div class="border-b border-black p-2 text-[0.6rem] leading-4">
+                <div class="text-center pb-2">
+                  آیین نامه بازرسی نمونه برداری فرآورده‌های استاندارد شده
+                </div>
+                <div>
+                  ماده ۸: استاندارد باقیمانده نمونه: هرگاه پس از انجام آزمایش
+                  باقیمانده نمونه قابل استفاده یا تبدیل باشد صاحب کالا موظف است
+                  حداکثر ظرف مدت ۲۰ روز برای کالای فاسد شدنی و ۲ ماه برای سایر
+                  کالاها از تاریخ صدور نتایج آزمون مراجعه و باقیمانده نمونه خود
+                  را در مقابل دادن رسید دریافت نماید. عدم مراجعه صاحب کالا در
+                  مدت‌های تعیین شده به مفهوم انصراف از دریافت نمونه‌های مذکور
+                  نلالی و اداره کل استاندارد می‌تواند از آنها به نحو مقتضی درجهت
+                  تحقق اهداف خود استفاده نماید.
+                </div>
+                <div>
+                  ماده ۹: هرگاه اجرای استاندارد در مورد کالایی، اجباری اعلام
+                  شود، پس از انقضای مهلت مقر، تمرکز و توزیع و فروش این گونه
+                  کالاها با کیفیت پایین‌تر از استاندارد مربوط و یا بدون علامت
+                  استاندارد ایران ممنوع و با رعایت شرایط و امکانات خاصی و دفعات
+                  و مراتب تعزیز اعم از احضا و علا، تذکر، توبخ، تهدید و اخذ تعهد
+                  و حبس از ۱ ماه تا ۲ سال جزای نقدی از یکصد هزار ریال تا پنجاه
+                  میلیون ریال به حکم محاکم محکوم خواهد شد. در صورتی که مسئول
+                  واحد نمونه برداری شده از دریافت نمونه شاهد خودداری نماید، حق
+                  اعتراض به نتایح آزمون را از خود سلب می‌نماید. مدت اعتبار نمونه
+                  شاهد دوماه پس از تاریخ صدور نتایج آزمون می‌باشد. در مورد
+                  کالاهای فاسد شدنی، نمونه شاهد در مدت اعتبار ذکر شده بروی کالا
+                  معتبر خواهد بود.
+                </div>
+                <div class="underline">
+                  تذکر مهم: صاحب کالا مکلف است حداکثر ۲۴ ساعت پس از نمونه
+                  برداری، نمونه را به اداره استاندارد استان تحویل نماید.
+                </div>
+              </div>
+              <div
+                class="border-b border-black p-2 text-xs flex justify-between">
+                <div class="flex flex-col gap-2 justify-center">
+                  <div class="flex items-center">
+                    <?xml version="1.0" ?>
+                    <svg
+                      height="15"
+                      viewBox="0 0 48 48"
+                      width="15"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="pl-1"
+                    >
+                      <path
+                        d="M24 4c-7.73 0-14 6.27-14 14 0 10.5 14 26 14 26s14-15.5 14-26c0-7.73-6.27-14-14-14zm0 19c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"
+                      />
+                      <path d="M0 0h48v48H0z" fill="none" />
+                    </svg>
+                    <span>
+                      دفتر تهران: زعفرانیه، خیابان پسیان، نبش جامی شرقی، پلاک
+                      ۲۸، ساختمان پیدایش، واحد C شمالی
+                    </span>
+                    <span class="flex items-center pr-10">
+                      <span>۰۲۱-۹۱۳۰۴۵۰</span>
+                      <span>
+                        <?xml version="1.0" ?><svg
+                          height="15"
+                          viewBox="0 0 24 24"
+                          width="15"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M20 10.999h2C22 5.869 18.127 2 12.99 2v2C17.052 4 20 6.943 20 10.999z"
+                          />
+                          <path
+                            d="M13 8c2.103 0 3 .897 3 3h2c0-3.225-1.775-5-5-5v2zm3.422 5.443a1.001 1.001 0 0 0-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 0 0 .043-1.391L6.859 3.513a1 1 0 0 0-1.391-.087l-2.17 1.861a1 1 0 0 0-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 0 0 .648-.291l1.86-2.171a1 1 0 0 0-.086-1.391l-4.064-3.696z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="flex items-center">
+                      <span>
+                        <?xml version="1.0" ?><svg
+                          height="15"
+                          viewBox="0 0 48 48"
+                          width="15"
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="pl-1"
+                        >
+                          <path
+                            d="M24 4c-7.73 0-14 6.27-14 14 0 10.5 14 26 14 26s14-15.5 14-26c0-7.73-6.27-14-14-14zm0 19c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"
+                          />
+                          <path d="M0 0h48v48H0z" fill="none" />
+                        </svg> </span
+                      ><span>دفتر همدان: آقای یونسی</span>
+                    </span>
+                    <div class="flex items-center">
+                      <span>۰۹۱۸۳۱۴۰۴۱۳</span>
+                      <span>
+                        <?xml version="1.0" ?><svg
+                          id="Layer_1_1_"
+                          style="enable-background: new 0 0 16 16"
+                          height="15"
+                          width="15"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          xml:space="preserve"
+                          xmlns="http://www.w3.org/2000/svg"
+                          xmlns:xlink="http://www.w3.org/1999/xlink"
+                        >
+                          <path
+                            d="M5,16h6c1.105,0,2-0.895,2-2V2c0-1.105-0.895-2-2-2H5C3.895,0,3,0.895,3,2v12C3,15.105,3.895,16,5,16z M4,2h8v12H4V2z"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="h-12 w-12 bg-gray-100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const timeDiv = document.getElementById("time");
+    const formattedDate = new Date().toLocaleDateString('fa-IR');
+    const textNode = document.createTextNode(formattedDate);
+    timeDiv.appendChild(textNode);
+    
+
+  </script>
+</html>

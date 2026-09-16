@@ -1,0 +1,447 @@
+<!-- prettier-ignore -->
+
+<html dir="rtl" lang="fa-IR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>گزارش نمونه برداری</title>
+    <link href="https://cdn.naitco.ir/fonts/vazirmatn/non-latin/font-face.css" rel="stylesheet" />
+    <script src="https://cdn.naitco.ir/js/tailwindcss/tailwindcss-v3.4.5.min.js"></script>
+    <style>
+      * {
+        border-width: 0;
+      }
+
+      html,
+      body {
+        font-family: "Vazirmatn";
+        print-color-adjust: exact;
+      }
+
+      .template {
+        background: rgb(243, 244, 246);
+      }
+
+      .template .page {
+        overflow: hidden;
+        display: block;
+        margin: 0 auto;
+        font-size: 13px;
+        background-color: white;
+      }
+
+      .template .page:not(:last-of-type) {
+        border-bottom: 1px solid rgb(229, 231, 235);
+      }
+
+      .template .page[data-size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+      }
+
+      @media print {
+        .template .page {
+          margin: 0;
+        }
+      }
+
+      th {
+        border-left: 1px solid black;
+        font-size: 12px;
+        font-weight: 300;
+        padding: 8px 4px;
+      }
+
+      td {
+        padding: 8px 4px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <%
+
+    const digitsEn = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    const digitsFa = ["۰", "١", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"]
+    function toPersianNum(text) {
+      let result = '';
+      for (let i = 0; i < text.length; i++) {
+        if (/^\d+$/.test(text.charAt(i))) {
+          result += digitsFa[digitsEn.indexOf(text.charAt(i))]
+        } else {
+          result += text.charAt(i);
+        }
+      }
+      return result;
+    }
+
+    function getProductName(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += (products[product].ProductName ? products[product].ProductName : "")
+      }
+      return result;
+    }
+
+    function getModel(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += (products[product].Model ? products[product].Model : "")
+      }
+      return result;
+    }
+
+    function getBrand(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += (products[product].Brand ? products[product].Brand : "")
+      }
+      return result;
+    }
+
+    function getManufactureCountry(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += (products[product].ManufactureCountry ? products[product].ManufactureCountry : "")
+      }
+      return result;
+    }
+
+    function getStandardMethod(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += (products[product].StandardMethod ? products[product].StandardMethod : "")
+      }
+      return result;
+    }
+
+    function getPackingType(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += (products[product].PackingType ? products[product].PackingType : "")
+      }
+      return result;
+    }
+
+    function getSampleAmount(products) {
+      let result = '';
+      for (let product = 0; product < products.length; product++) {
+        if (result !== '') {
+          result += '، '
+        }
+        result += (products[product].SampleAmount ? products[product].SampleAmount : "") + " - " + (products[product].Unit ? products[product].Unit : "")
+      }
+      return result;
+    }
+
+    function getPackingTypeCodes(ProductsData) {
+      const uniqueProductNames = Array.from(new Set(ProductsData?.flatMap((i) =>
+        (i?.PackingType?.length && i?.PackingType?.map((entry) => entry?.ProductName)) || []
+      )));
+
+      const result = uniqueProductNames.map((productName) => {
+        const entries = ProductsData?.flatMap((i) =>
+          i?.PackingType?.filter((entry) => entry?.ProductName === productName) || []
+        );
+
+        const codes = entries
+          ?.flatMap((entry) => entry?.codes || [])
+          ?.map((code) => `NAIT${code}`)
+          ?.join(", ");
+
+        return ` ${codes}`;
+      }).join(" - ");
+
+      return result;
+    }
+  %>
+
+  <body>
+    <div class="template">
+      <div data-template="preinvoice">
+        <div class="page" data-size="A4">
+          <div class="m-5 mb-1">
+            <div class="flex justify-between">
+              <div class="pb-2">
+              <img src="data:image/png;base64,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
+" alt="logo" width="80px" height="80px"> 
+              </div>
+              <div class="text-center mb-5">
+                <div class="text-xl">نورا آزما بین الملل</div>
+                <div>بازرسی و خدمات آزمایشگاهی</div>
+              </div>
+              <div>
+                <div>تاریخ: <span id="time"></span></div>
+                <div>شماره: <%= caseNo %> </div>
+              </div>
+            </div>
+            <div class="border border-black">
+              <!-- HEADER -->
+              <div
+                class="flex flex-col gap-2 border-b border-black p-2 text-xs"
+              >
+                <div class="font-bold">موضـــــوع: گزارش نمونه برداری</div>
+                <div class="font-bold">با سلام</div>
+                <div>
+                  به استناد مقررات صادرات و واردات سازمان ملی استاندارد ایران از
+                  محمــوله:
+                </div>
+                <div>
+                  با عنوان <span class="font-bold"><%= typeof Title !== 'undefined' && Title ? Title : "" %></span> با مشخصات مندرج در جدول زیر نمونه
+                  برداری و صحت مقاد آنرا تایید می نمایم.
+                </div>
+              </div>
+              <!-- CONTENT TABLE -->
+              <div>
+                <table class="w-full">
+                  <tr class="border-b border-black">
+                    <td colspan="2" class="border-l border-black">
+                      مشخصات اسنادی محموله
+                    </td>
+                    <td colspan="2">مشخصات نمونه</td>
+                  </tr>
+                  <tr class="border-b border-black">
+                    <th class="w-1/6">شماره و تاریخ کوتاژ</th>
+                    <td class="border-l border-black w-2/6">
+                      <%= CottageDate %> - <%= CottageNo %>
+                    </td>
+                    <th class="w-1/6">
+                      مکان نمونه برداری <br />شماره قبض انبار
+                    </th>
+                    <td class="w-2/6">
+                      <%= Place %> - ش‌ق
+                      <%= Receipt %>
+                    </td>
+                  </tr>
+                  <tr class="border-b border-black">
+                    <th>نام فروشنده</th>
+                    <td class="border-l border-black"><%= SellerName %></td>
+                    <th>نام نمونه مقدار آن</th>
+                    <td> 
+                       <%= getProductName(ProductsData) %>
+                       -
+                       <%= getSampleAmount(ProductsData) %>
+                      </td>
+                  </tr>
+                  <tr class="border-b border-black">
+                    <th>نام خریدار یا صاحب کالا</th>
+                    <td class="border-l border-black"><%= BuyerName %></td>
+                    <th>نحوه مهار شماره پلمپ</th>
+                    <td>
+                      <%= getPackingTypeCodes(ProductsData) %>
+                     </td>
+                  </tr>
+                  <tr class="border-b border-black">
+                    <th>شماره ملی</th>
+                    <td class="border-l border-black">  <%= NationalNo %></td>
+                    <th>شماره اقتصادی</th>
+                    <td><%= EconomicalNo %></td>
+                  </tr>
+                  <tr class="border-b border-black">
+                    <th>نام کشور سازنده</th>
+                    <td class="border-l border-black"><%= getManufactureCountry(ProductsData) %></td>
+                    <th>روش استاندارد مرجع نمونه برداری</th>
+                    <td><%= getStandardMethod(ProductsData) %></td>
+                  </tr>
+                  <tr class="border-b border-black">
+                    <th>نام مارک و مدل کالا</th>
+                    <td class="border-l border-black"><%= getBrand(ProductsData) %></td>
+                    <th>مشخصات نمونه <br />مارک، مدل و شماره سریال</th>
+                    <td><%= getModel(ProductsData) %></td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- *********************** -->
+              <div class="p-2 text-xs">
+                در تطبیق مشخصات محموله رویت شده فوق الذکر با اسناد گمرکی مربوطه
+                مغایرتی بین محموله و اسناد گمرکی مشاهده نشده بشرح ذیل گزارش می
+                گردد:
+              </div>
+              <div class="border-t border-black p-2 text-xs">
+                مبلغ <%= toPersianNum(Math.round(InspectionFeeInRial).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")) %> ریال بابت حق الزحمه نمونه برداری و <%= toPersianNum(Math.round(InspectionFeeInRial * 0.1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")) %> ریال
+                مالیات ارزش افزوده و عوارض به جمع کل <%= toPersianNum(Math.round(InspectionFeeInRial * 1.1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")) %> ریال دریافت گردید.
+              </div>
+              <div class="border-t border-black p-2 text-xs flex items-center gap-5">
+                سایر ملاحظات --------------
+                <span class="flex items-center gap-1">
+                  <input type="checkbox" id="1" class="accent-black"   onclick="return false;"/>
+                  <label for="1">ندارد</label>
+                </span>
+                -----------
+                <span class="flex items-center gap-1">
+                  <input type="checkbox" id="2" class="accent-black"   onclick="return false;"/>
+                  <label for="2">دارد</label>
+                </span>
+                به شرح ذیل:
+              </div>
+              <div class="border-t border-black p-2">
+                <table class="w-full">
+                  <tr>
+                    <td class="text-xs">امضا نماینده صاحب کالا <br/>
+                      <% if (typeof ProductOwnerSignature !== 'undefined' && ProductOwnerSignature) { %>
+                        <img
+                        class="mx-auto"
+                        src="<%= ProductOwnerSignature %>"
+                        alt="ProductiveSignature"
+                        width="100px"
+                        height="100px"
+                        />
+                      <% } else { %>
+                        <div class="w-[100px] h-[100px] mx-auto"></div>
+                      <% } %>
+                    </td>
+                    <td class="text-xs">امضا نمونه بردار <br/>
+                      <% if (typeof SamplerSignature !== 'undefined' && SamplerSignature) { %>
+                        <img
+                        class="mx-auto"
+                        src="<%= SamplerSignature %>"
+                        alt="ProductiveSignature"
+                        width="100px"
+                        height="100px"
+                        />
+                      <% } else { %>
+                        <div class="w-[100px] h-[100px] mx-auto"></div>
+                      <% } %>
+                  </td>
+                    <td class="text-xs">امضا هماهنگ کننده و مهر شرکت بازرسی <br/>
+                      <% if (typeof CoordinatorSignature !== 'undefined' && CoordinatorSignature) { %>
+                        <img
+                        class="mx-auto"
+                        src="<%= CoordinatorSignature %>"
+                        alt="ProductiveSignature"
+                        width="100px"
+                        height="100px"
+                        />
+                      <% } else { %>
+                        <div class="w-[100px] h-[100px] mx-auto"></div>
+                      <% } %>
+                  </td>
+                  </tr>
+                  <tr>
+                    <td class="text-xs">نام و نام خانوادگی: <%= ProductOwner %></td>
+                    <td class="text-xs">نام و نام خانوادگی: <%= SamplerName %></td>
+                    <td class="text-xs">نام و نام خانوادگی: <%= Coordinator %></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="px-4 text-xs">
+            <div class="border-b border-black pb-2">
+              <div class="flex justify-center items-center pb-1">
+                <span class="ml-5">نسخه سفید: اداره استاندارد</span>
+                <span class="ml-5">نسخه قرمز مشتری</span>
+                <span class="ml-5">نسخه زرد: شرکت بازرسی</span>
+              </div>
+              <div>
+                <span class="font-bold">توجه:</span>
+                <span class="leading-5"
+                  >این فرم در سربرگ شرکت بازرسی تنظیم و جهت نمونه برداری یک
+                  نمونه معتبر میباشد، درصورتیکه از محموله چندین نمونه اخذ گردد
+                  بایستی در ملاحطات تعداد نمونه‌ها و نوع آنها مشخص گردد. ضمنا
+                  چنانچه به دلایلی این گزارش نمونه برداری بدون امضاء ارزیاب گمرک
+                  و نماینده صاحب کالا و نماینده انبارهای عمومی تنظیم گردد و صرفا
+                  با مهر شرکت بازرسی و امضاء نمونه بردار با درج نام و نام
+                  خانوادگی باشد معتبر خواهد بود.</span
+                >
+              </div>
+            </div>
+            <div class="pt-2 flex flex-col gap-2">
+              <div>
+                <span class="font-bold">آدرس دفتر تهران:</span> 
+                زعفرانیه، خیابان پسیان، نبش جامی شرقی، پلاک ۲۸، ساختمان
+                پیدایش، واحد C شمالی
+                 <span class="pr-5"
+                  ><?xml version="1.0" ?><svg
+                    height="10"
+                    viewBox="0 0 48 48"
+                    width="10"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="rotate-90 inline"
+                  >
+                    <path d="M0 0h48v48H0z" fill="none" />
+                    <path
+                      d="M24 18c-3.21 0-6.3.5-9.2 1.44v6.21c0 .79-.46 1.47-1.12 1.8-1.95.98-3.74 2.23-5.33 3.7-.36.35-.85.57-1.4.57-.55 0-1.05-.22-1.41-.59L.59 26.18c-.37-.37-.59-.87-.59-1.42 0-.55.22-1.05.59-1.42C6.68 17.55 14.93 14 24 14s17.32 3.55 23.41 9.34c.37.36.59.87.59 1.42 0 .55-.22 1.05-.59 1.41l-4.95 4.95c-.36.36-.86.59-1.41.59-.54 0-1.04-.22-1.4-.57-1.59-1.47-3.38-2.72-5.33-3.7-.66-.33-1.12-1.01-1.12-1.8v-6.21C30.3 18.5 27.21 18 24 18z"
+                    />
+                  </svg>
+                  ۹۱۳۰۴۵۰۰-۰۲۱</span
+                >
+              </div>
+              <div>
+                <span class="font-bold">آدرس شعبه گمرگ تهران:</span> پنجره واحد
+                تجاری، واحد ۱۲ <span class="pr-5">۰۹۱۹۵۲۳۹۸۸۷</span>
+                <span class="pr-5"
+                  ><?xml version="1.0" ?><svg
+                    height="10"
+                    viewBox="0 0 48 48"
+                    width="10"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="rotate-90 inline"
+                  >
+                    <path d="M0 0h48v48H0z" fill="none" />
+                    <path
+                      d="M24 18c-3.21 0-6.3.5-9.2 1.44v6.21c0 .79-.46 1.47-1.12 1.8-1.95.98-3.74 2.23-5.33 3.7-.36.35-.85.57-1.4.57-.55 0-1.05-.22-1.41-.59L.59 26.18c-.37-.37-.59-.87-.59-1.42 0-.55.22-1.05.59-1.42C6.68 17.55 14.93 14 24 14s17.32 3.55 23.41 9.34c.37.36.59.87.59 1.42 0 .55-.22 1.05-.59 1.41l-4.95 4.95c-.36.36-.86.59-1.41.59-.54 0-1.04-.22-1.4-.57-1.59-1.47-3.38-2.72-5.33-3.7-.66-.33-1.12-1.01-1.12-1.8v-6.21C30.3 18.5 27.21 18 24 18z"
+                    />
+                  </svg>
+                  ۰۲۱-۹۱۳۰۴۵۰۰ داخلی ۱۷۰</span
+                >
+              </div>
+              <div>
+                <span class="font-bold">آدرس شعبه بندرعباس:</span> خ دانشگاه، ک
+                دانشگاه ۲، ساختمان بانو، ط ۴، واحد ۴، تلفن تماس: ۰۹۳۶۵۰۶۵۵۰۰
+                <span class="pr-5"
+                  ><?xml version="1.0" ?><svg
+                    height="10"
+                    viewBox="0 0 48 48"
+                    width="10"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="rotate-90 inline"
+                  >
+                    <path d="M0 0h48v48H0z" fill="none" />
+                    <path
+                      d="M24 18c-3.21 0-6.3.5-9.2 1.44v6.21c0 .79-.46 1.47-1.12 1.8-1.95.98-3.74 2.23-5.33 3.7-.36.35-.85.57-1.4.57-.55 0-1.05-.22-1.41-.59L.59 26.18c-.37-.37-.59-.87-.59-1.42 0-.55.22-1.05.59-1.42C6.68 17.55 14.93 14 24 14s17.32 3.55 23.41 9.34c.37.36.59.87.59 1.42 0 .55-.22 1.05-.59 1.41l-4.95 4.95c-.36.36-.86.59-1.41.59-.54 0-1.04-.22-1.4-.57-1.59-1.47-3.38-2.72-5.33-3.7-.66-.33-1.12-1.01-1.12-1.8v-6.21C30.3 18.5 27.21 18 24 18z"
+                    />
+                  </svg>
+                  ۰۷۶۳۳۶۲۱۵۵۳</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+
+  <script>
+    const timeDiv = document.getElementById("time");
+    const formattedDate = new Date().toLocaleDateString('fa-IR');
+    const textNode = document.createTextNode(formattedDate);
+    timeDiv.appendChild(textNode);
+    
+
+  </script>
+
+</html>

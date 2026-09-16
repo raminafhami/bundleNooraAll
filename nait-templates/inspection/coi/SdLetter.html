@@ -1,0 +1,180 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DECLERATION OF CONFORMITY (MD/SD)</title>
+    <link href="https://cdn.naitco.ir/fonts/vazirmatn/non-latin/font-face.css" rel="stylesheet" />
+    <script src="https://cdn.naitco.ir/js/tailwindcss/tailwindcss-v3.4.5.min.js"></script>
+    <style>
+      * {
+        border-width: 0;
+      }
+
+      html,
+      body {
+        font-family: "Vazirmatn";
+        print-color-adjust: exact;
+      }
+
+      .template {
+        background: rgb(243, 244, 246);
+      }
+
+      .template .page {
+        overflow: hidden;
+        display: block;
+        margin: 0 auto;
+        font-size: 13px;
+        background-color: white;
+      }
+
+      .template .page:not(:last-of-type) {
+        border-bottom: 1px solid rgb(229, 231, 235);
+      }
+
+      .template .page[data-size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+      }
+
+      @media print {
+        .template .page {
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="template">
+      <div class="page" data-size="A4">
+        <div class="flex px-20 py-8 text-sm/5 flex-col">
+          <div class="flex mt-32 ms-auto me-8 gap-x-2">
+            <span class="font-bold">Date: </span>
+            <span><%= TestDateEnd.replaceAll('/', '-') %></span>
+          </div>
+
+          <div class="mt-8 mb-3 text-lg font-bold text-center">
+            DECLERATION OF CONFORMITY (MD/SD)
+          </div>
+
+          <div class="ps-4 py-6">
+            <div class="flex">
+              <div class="w-48 font-bold shrink-0">P/I NO</div>
+              <div class="mx-3">:</div>
+              <div class="grow text-left"><%= ProformaNo %></div>
+            </div>
+
+            <div class="flex">
+              <div class="w-48 font-bold shrink-0">P/I DATE</div>
+              <div class="mx-3">:</div>
+              <div class="grow text-left"><%= ProformaDate.replaceAll('/', '-') %></div>
+            </div>
+
+            <div class="my-4"></div>
+
+            <div class="flex">
+              <div class="w-48 font-bold shrink-0">MANUFACTURER</div>
+              <div class="mx-3">:</div>
+              <div class="grow"><%= Manufacturer %></div>
+            </div>
+
+            <div class="flex">
+              <div class="w-48 font-bold shrink-0">BRAND</div>
+              <div class="mx-3">:</div>
+              <div class="grow"><%= Brand %></div>
+            </div>
+
+            <div class="my-4"></div>
+
+            <div class="flex">
+              <div class="w-48 font-bold shrink-0">IMPORTER</div>
+              <div class="mx-3">:</div>
+              <div class="grow"><%= Importer %></div>
+            </div>
+            
+            <div class="flex">
+              <div class="w-48 font-bold shrink-0">EXPORTER</div>
+              <div class="mx-3">:</div>
+              <div class="grow"><%= Exporter %></div>
+            </div>
+
+            <% if (typeof Seller !== 'undefined') { %>
+              <div class="flex">
+                <div class="w-48 font-bold shrink-0">SELLER</div>
+                <div class="mx-3">:</div>
+                <div class="grow"><%= Seller %></div>
+              </div>
+            <% } %>
+
+            <div class="my-4"></div>
+
+            <div class="flex">
+              <div class="w-48 font-bold shrink-0">COUNTRY OF ORIGIN</div>
+              <div class="mx-3">:</div>
+              <div class="grow"><%= CountryOfOrigin %></div>
+            </div>
+
+            <table
+              class="w-full my-2 border-2 border-black text-sm text-center border-collapse"
+            >
+              <colgroup>
+                <col class="w-20" />
+                <col />
+                <col class="w-60" />
+              </colgroup>
+              <thead>
+                <tr class="border-2 border-black">
+                  <th class="py-0.5 border-2 border-black">No.</th>
+                  <th class="py-0.5 border-2 border-black">Description of Goods</th>
+                  <th class="py-0.5 border-2 border-black">Standards</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% 
+                  for (let i = 0; i < Goods?.length ?? 0; i++) {
+                    let standardItems = Goods[i].document.split('\n');
+                %>
+                  <tr class="border-2 border-black">
+                    <td class="py-0.5 border-2 border-black"><%= i + 1 %></td>
+                    <td class="py-0.5 border-2 border-black"><%= Goods[i].description %></td>
+                    <td class="py-0.5 border-2 border-black">
+                      <% for (let j = 0; j < standardItems.length; j++) { %>
+                        <%= standardItems[j] %> <% if (j !== standardItems.length - 1) { %>
+                        <br />
+                      <% } %> <% } %>
+                    </td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+
+            <div class="my-4"></div>
+
+            <div class="text-justify">
+              WE, <%= typeof Seller !== 'undefined' ? Seller : Exporter %> THE SELLER OF ABOVE GOODS ARE HEREBY
+              CONFIRMING THAT THE GOODS ARE ORIGINATED IN <%= CountryOfOrigin %>
+              AND ARE MADE IN CONFORMITY WITH THE ABOVE STANDARD(S). WE ARE
+              HEREBY CERTIFYING THAT THE GOODS SHIPPED/INSPECTED ARE IN
+              CONFORMITY WITH QUALITY AND QUANTITY AND PACKING OF GOODS LOADED
+              ARE STRICTLY COMPLYING WITH SPECIFICATIONS OF THE GOODS INDICATED
+              IN THE RELATIVE P/I.
+            </div>
+
+            <div class="flex mt-8 justify-between">
+              <div class="text-center">
+                <div>SELLER REPRESENTATIVE:</div>
+                <div>(SIGNATURE AND STAMP)</div>
+              </div>
+              <div class="text-center">
+                <div>NAITCO REPRESENTATIVE:</div>
+                <div>(SIGNATURE AND STAMP)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

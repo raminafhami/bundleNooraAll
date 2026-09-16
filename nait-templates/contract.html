@@ -1,0 +1,880 @@
+<html dir="rtl" lang="fa">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>قرارداد</title>
+    <link href="https://cdn.naitco.ir/fonts/b-nazanin/FontFace.css" rel="stylesheet" />
+    <link href="https://cdn.naitco.ir/fonts/vazirmatn/non-latin/font-face.css" rel="stylesheet" />
+    <script src="https://cdn.naitco.ir/js/tailwindcss/tailwindcss-v3.4.5.min.js"></script>
+    <style>
+      * {
+        border-width: 0;
+      }
+
+      html,
+      body {
+        font-family: "B Nazanin", "Vazirmatn";
+        print-color-adjust: exact;
+      }
+
+      .template {
+        background: rgb(243, 244, 246);
+      }
+
+      .template .page {
+        overflow: hidden;
+        display: block;
+        margin: 0 auto;
+        font-size: 13px;
+        background-color: white;
+      }
+
+      .template .page:not(:last-of-type) {
+        border-bottom: 1px solid rgb(229, 231, 235);
+      }
+
+      .template .page[data-size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+      }
+
+      .template .page[data-size="A4"][data-layout="landscape"] {
+        width: 29.7cm;
+        height: 21cm;
+      }
+
+      .template .page[data-size="A3"] {
+        width: 29.7cm;
+        height: 42cm;
+      }
+
+      .template .page[data-size="A3"][data-layout="landscape"] {
+        width: 42cm;
+        height: 29.7cm;
+      }
+
+      .template .page[data-size="A5"] {
+        width: 14.8cm;
+        height: 21cm;
+      }
+
+      .page[data-size="A5"][data-layout="landscape"] {
+        width: 21cm;
+        height: 14.8cm;
+      }
+
+      @media print {
+        .template .page {
+          margin: 0;
+        }
+      }
+
+      [data-template="contract"] .number-item {
+        display: flex;
+      }
+
+      [data-template="contract"] .number-item-icon {
+        margin-right: 2rem;
+        margin-left: 1rem;
+      }
+
+      [data-template="contract"] .number-item .number-item-icon {
+        margin-right: 0;
+      }
+
+      [data-template="contract"] .item {
+        display: flex;
+        align-items: center;
+        column-gap: 0.5rem;
+      }
+
+      [data-template="contract"] .item-square {
+        width: 0.75rem;
+        height: 0.75rem;
+        padding: 1px;
+        border-width: 1px;
+        border-color: #000;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="template">
+      <div data-template="contract">
+        <div class="page" data-size="A4">
+          <div class="flex h-full px-10 py-6 flex-col">
+            <div class="header w-full basis-40 shrink-0">
+              <div class="py-1 bg-[#195da4] text-white text-center">
+                فرم قرارداد بازرسی
+              </div>
+              <div class="flex pt-4">
+                <img
+                  class="h-24"
+                  src=" data:image/png;base64,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"
+                />
+              </div>
+            </div>
+            <div class="overflow-hidden text-justify grow">
+              <div>
+                این قرارداد بین شرکت بازرسی و خدمات آزمایشگاهی نورا آزما بین
+                الملل به آدرس ایلام، محله جانبازان، خ ابراهیم غربی، بلوار
+                شهرداری، پ 0 تلفن/فاکس 02191304500 شناسه ملی 10300072206 کدپستی
+                693118554 که منبعد در این قرارداد بعنوان
+                <span class="font-bold">شرکت بازرسی</span> نامیده می شود از یک
+                طرف و خانم/آقای <%= CustomerName %> به نمایندگی از
+                شرکت/خانم/آقای <%= CustomerName %> به آدرس <%=
+                CustomerData.address %> تلفن <%= CustomerData.phoneNumber %> کد
+                اقتصادی <%= CustomerData.nationalCode %> شناسه ملی <%=
+                CustomerData.nationalCode %> کدپستی <%= CustomerData.postalCode
+                %> که از این پس در این قرارداد
+                <span class="font-bold">خریدار</span>
+                نامیده خواهد شد از طرف دیگر با شرایط ذیل منعقد می گردد:
+              </div>
+
+              <div class="font-bold">ماده 1) موضوع قرارداد</div>
+
+              <div>
+                بازرسی کالای موضوع پروفرمای شماره <%= ProformaNo %> مورخ <%= new
+                Date().toLocaleDateString('fa-IR') %> از شرکت <%= CustomerName
+                %> با شماره تعرفه <%= CustomTariffNo %> و اعتبار اسنادی
+                ................ (در صورت وجود) بر اساس حدود ذیل:
+              </div>
+
+              <div class="group item" aria-checked="true">
+                <div class="item-square">
+                  <div
+                    class="hidden w-full h-full group-aria-checked:block bg-[#195da4]"
+                  ></div>
+                </div>
+                <div>بازرسی پیش از حمل (PSI) مطابق فرم الف</div>
+              </div>
+
+              <div class="item">
+                <div class="item-square"></div>
+                <div>
+                  بازرسی و ارزیابی انطباق COI بر اساس ضوابط و استاندارد مورد
+                  قبول سازمان ملی استاندارد مطابق فرم ب
+                </div>
+              </div>
+
+              <div class="font-bold mt-5">ماده 2) زمانبندی قرارداد</div>
+
+              <div>
+                شروع قرارداد از زمان انعقاد قرارداد و تاییدیه حق الزحمه به بازرس
+                تا زمان پایان بازرسی و صدور گزارش و یا گواهی و یا گزارش عدم
+                انطباق خواهد بود.
+              </div>
+
+              <div>
+                چنانچه ارجاع کار بازرسی از جانب خریدار به بازرس بیش از 45 روز از
+                تاریخ این قرارداد به طول انجامد ، حق الزحمه ذکر شده در این
+                قرارداد بر طبق نرخ های جاری تاریخ ارجاع محاسبه خواهد شد
+              </div>
+
+              <div class="font-bold mt-5">ماده 3) کارمزد بازرسی</div>
+
+              <div class="group item" aria-checked=<%= InspectionWagePayer === 'seller' ? 'true' : 'false' %>>
+                <div class="item-square">
+                  <div
+                    class="hidden w-full h-full group-aria-checked:block bg-[#195da4]"
+                  ></div>
+                </div>
+                <div>توسط فروشنده پرداخت می شود.</div>
+              </div>
+
+              <div class="group item" aria-checked=<%= InspectionWagePayer === 'buyer' ? 'true' : 'false' %>>
+                <div class="item-square">
+                  <div
+                    class="hidden w-full h-full group-aria-checked:block bg-[#195da4]"
+                  ></div>
+                </div>
+                <div>
+                  توسط خریدار پرداخت می شود (با قبول و تعهد پرداخت حقوق قانونی
+                  از جمله بیمه و مالیات)
+                </div>
+              </div>
+
+              <div class="font-bold mt-5">ماده 4) نحوه پرداخت</div>
+
+              <div>
+                مبلغ اعلام شده در پیش فاکتور پیش از شروع کار به بازرس پرداخت می
+                گردد و تسویه نهایی موکول به پایان کار و قبل از صدور گواهی و یا
+                گزارش بازرسی خواهد بود.
+              </div>
+
+              <div class="font-bold mt-5">ماده 5) تعهدات خریدار</div>
+
+              <div class="number-item">
+                <div class="number-item-icon">1)</div>
+                <div>
+                  خریدار متعهد می شود، مدارک مورد نیاز برای بازرسی را در اختیار
+                  شرکت بازرسی قرار دهد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">2)</div>
+                <div>
+                  خریدار موظف است، هرگونه مدارك و اسناد مورد نياز براي انجام
+                  امور بازرسي (بروشور، نقشه، مشخصات فني و غيره) بايد حداقل دو
+                  هفته قبل از انجام بازرسي به شركت بازرسي كننده تحويل نماید در
+                  صورت عدم تحویل به موقع مدارک و ارائه آن توسط فروشنده و یا
+                  تولید کننده، این مدارک ملاک انجام بازرسی قرار گرفته و شرکت
+                  بازرسی مسئولیتی در برابر ادعاهای احتمالی خریدار نخواهد داشت.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">3)</div>
+                <div>
+                  خریدار متعهد می شود تاریخ بازرسی را کتباً و حداقل هفت روز کاری
+                  پیش از بازرسی به شرکت بازرسی اطلاع داده و هماهنگی های لازم را
+                  با فروشنده و یا تولیدکننده بعمل آورد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">4)</div>
+                <div>
+                  خریدار متعهد می شود، ضمن هماهنگی با فروشنده و یا تولیدکننده و
+                  همچنین تهیه مجوزها، شرایط، امکانات و تجهیزات لازم برای انجام
+                  بازرسی را تهیه نموده و در اختیار شرکت بازرسی قرار دهد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">5)</div>
+                <div>
+                  در صورتیکه بازرس در زمان و محل هماهنگ شده با خریدار و یا
+                  نماینده او برای بازرسی حاضر شود و به هر دلیلی انجام بازرسی
+                  امکان پذیر نباشد یا بازرسی کامل نشود، خریدار موظف است هزینه
+                  نفر - روز اعلام شده در این قرارداد برای آن روز را به صورت کامل
+                  پرداخت نماید.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">6)</div>
+                <div>
+                  خریدار موظف به پرداخت هزینه های جانبی در ارتباط با کار بازرسی
+                  از جمله هزینه ارسال نمونه به آزمایشگاه، هزینه های انجام آزمون
+                  و غیره می باشد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">7)</div>
+                <div>
+                  در صورت بازرسي، نمونه برداري و آزمايش فراتر از حدود بازرسی
+                  تعيين شده خریدار موظف به پرداخت هزینه های اضافی می باشد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">8)</div>
+                <div>
+                  خریدار موظف است، در صورت مشاهده هر گونه مغایرت احتمالی در
+                  كميت، كيفيت، بسته بندي کالا یا مشخصات سفارش، موارد را قبل از
+                  ترخیص کالا از گمرک مقصد و بدون انجام تغییراتی که ممکن است در
+                  تعیین مسئول یا چگونگی ایجاد مغایرت ادعا شده خلل وارد نماید به
+                  اطلاع فروشنده و شرکت بازرسی و یا نماینده آن رسانده و ترتیبات
+                  لازم برای انجام بازدید، نمونه برداری و بازرسی مجدد و تخفیفات
+                  لازم را برای تعیین میزان و علت مغایرت فراهم نماید مگر آنکه
+                  قبلا و به طور شفاف ترتیبات دیگری با شرکت بازرسی طبق مستندات
+                  توافق شده باشد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">9)</div>
+                <div>
+                  در صورت كشف هر گونه مغايرت بعد از ترخيص كالا از گمرك و حداكثر
+                  تا 90 روز پس از ترخيص كالا از گمرك خريدار بايد مراتب را كتباً
+                  به فروشنده و شرکت بازرسی یا
+                </div>
+              </div>
+            </div>
+            <div class="footer w-full pt-8 basis-28 shrink-0">
+              <div class="flex justify-around">
+                <div class="text-center">
+                  <div class="font-bold">
+                    شرکت بازرسی و خدمات آزمایشگاهی نورا آزما بین الملل
+                  </div>
+                  <div class="mt-1">مهر و امضا</div>
+                </div>
+                <div class="text-center">
+                  <div class="font-bold">خریدار</div>
+                  <div class="mt-1">مهر و امضا</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page" data-size="A4">
+          <div class="page-container flex h-full px-10 py-6 flex-col">
+            <div class="header w-full basis-40 shrink-0">
+              <div class="py-1 bg-[#195da4] text-white text-center">
+                فرم قرارداد بازرسی
+              </div>
+              <div class="flex pt-4">
+                <img
+                  class="h-24"
+                  src=" data:image/png;base64,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"
+                />
+              </div>
+            </div>
+            <div class="overflow-hidden text-justify grow">
+              <div class="number-item">
+                <div class="number-item-icon"></div>
+                <div>
+                  نماینده آن اعلام نمايد و چنانچه تمامي كالا موجود بوده و قابل
+                  شناسايي و اثبات بر اساس مدارك حمل باشد شرکت بازرسی، به جهت
+                  بررسی موضوع و ارائه گزارش، نسبت به بازرسی مجدد کالا اقدام
+                  نماید.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">10)</div>
+                <div>
+                  هنگامیکه توافق بازرسی مربوط به چند بخش مجزا باشد و به هر دلیلی
+                  یکی از بخش های کار مورد ادعای خسارت خریدار قرار گیرد، پرداخت
+                  دستمزد بازرسی مربوط به سایر بخشهای کار که خریدار ادعایی در
+                  مورد آنها ندارد، در تعهد خریدار می باشد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">11)</div>
+                <div>
+                  خریدار موظف است، قبلاً حدود بازرسي را به اطلاع فروشنده و / یا
+                  تولیدکننده رسانیده و موافقت ایشان را برای انجام حدود بازرسی
+                  جلب نماید. در صورت عدم موافقت فروشنده / سازنده با انجام کامل
+                  حدود بازرسی و عدم تدارک لازم برای انجام بهینه آن، شرکت بازرسی
+                  از صدور گواهینامه خودداری و از این بابت هیچگونه مسئولیتی متوجه
+                  شرکت بازرسی نمی باشد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">12)</div>
+                <div>
+                  خریدار موظف است، هر گونه روش انجام بازرسي و آزمون و استاندارد
+                  هاي آن كه براي تعيين مشخصات كالا حائز اهميت مي باشد را در
+                  مدارک خرید از جمله قرارداد بازرسی تعیین کند. در غیر اینصورت
+                  روش ها و استانداردهاي مورد استفاده فروشنده ملاك انجام بازرسي و
+                  آزمون خواهد بود. در خصوص اقلام مشمول استاندارد اجباري ملاك
+                  عمل، الزامات سازمان ملی استاندارد ايران می باشد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">13)</div>
+                <div>
+                  خریدار موظف است، درخصوص جزئیات بسته بندی پس از توافق با
+                  فروشنده مراتب را کتباً به اطلاع شرکت بازرسی برساند. در
+                  غیراینصورت استاندارد و عرف جاری فروشنده یا تولیدکننده ملاک
+                  بازرسی خواهد بود.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">14)</div>
+                <div>
+                  چنانچه پس از باز شدن اعتبار اسنادی، خریدار بخواهد شرکت بازرسی
+                  را تغییر دهد، لازم است ابتدا موافقت کتبی شرکت بازرسی را اخذ
+                  نماید. در صورتیکه شرکت بازرسی و خریدار در این مورد به توافق
+                  دست نیافتند، مراتب به جامعه ممیزی و بازرسی ایران منعکس شده و
+                  نظر این جامعه برای طرفین لازم الاجرا خواهد بود. در هر حال در
+                  صورت انجام عملیات بازرسی، اعم از اینکه گواهینامه صادر شود و یا
+                  نشود، کارمزد بازرسی باید پرداخت گردد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">15)</div>
+                <div>
+                  منظور از کالا در این سفارش، کالای نو می باشد و در صورتی که
+                  کالا مستعمل و یا بازسازی شده باشد و در پروفرم نیز تصریح شده
+                  باشد، بازرسی بر اساس آیین نامه و ضوابط اجرایی وزارتخانه مربوطه
+                  انجام می گردد و نیاز به تنظیم الحاقیه قرارداد می باشد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">16)</div>
+                <div>
+                  فروشنده مسئول تحویل کالا منطبق با مشخصات تعیین شده در مدارک
+                  خرید بوده و صدور گواهینامه بازرسی رافع مسئوليت هاي قراردادی
+                  فروشنده نمي¬باشد و در صورت اثبات هر گونه مغايرت در مشخصات
+                  كالا، جبران خسارات وارده به عهده فروشنده/سازنده مي باشد. معهذا
+                  شركت بازرسي موظف است در حد عرف معمول و حدود بازرسی تعیین شده
+                  براي احقاق حقوق حقه خريدار همكاري و اقدامات لازم را به عمل
+                  آورد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">17)</div>
+                <div>
+                  خریدار / واردکننده متعهد می گردد بارگذاری اظهارنامه گمرکی را
+                  پس از حصول اطمینان از بارگذاری گواهینامه COI در سامانه صادرات
+                  و واردات توسط شرکت بازرسی انجام دهد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">18)</div>
+                <div>
+                  خریدار موظف به عدم صدور اجازه حمل به فروشنده تا زمان صدور
+                  نتایج آزمون و گواهی بازرسی (در صورت انطباق) می باشد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">19)</div>
+                <div>خریدار موظف به ابلاغ بند 17 به فروشنده می باشد.</div>
+              </div>
+
+              <div class="font-bold mt-5">ماده 6) تعهدات شرکت بازرسی</div>
+
+              <div class="number-item">
+                <div class="number-item-icon">1)</div>
+                <div>
+                  شرکت بازرسی موظف است، اسناد و اطلاعات دریافت شده مربوط به
+                  موضوع قرارداد را محرمانه تلقی نموده و بدون رضایت خریدار به
+                  استثنا مراجع ذیصلاح در اختیار دیگران قرار ندهد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">2)</div>
+                <div>
+                  شرکت بازرسی موظف است، کار بازرسی ارجاعی را با دقت و مهارت حرفه
+                  ایی لازم انجام داده و تمامی موارد درخواست شده برای بازرسی کالا
+                  را طبق شرایط مندرج در این قرارداد انجام دهد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">3)</div>
+                <div>
+                  شرکت بازرسی موظف است، هرگونه عدم انطباق جزیی نتایج بازرسی با
+                  شرایط مندرج در قرارداد بازرسی را به اطلاع فروشنده و یا
+                  تولیدکننده جهت رفع عیب و اشکال برساند.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">4)</div>
+                <div>
+                  شرکت بازرسی موظف است، پس از انجام بازرسی و آزمون در صورت
+                  انطباق کالا مطابق قرارداد بازرسی، گزارش و یا گواهینامه بازرسی
+                  و در صورت مغایرت، گزارش عدم انطباق (NCR) را صادر و به خریدار
+                  ارائه دهد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">5)</div>
+                <div class="ms-4">
+                  شرکت بازرسی موظف است، در صورت انطباق کالا همزمان یا پس از صدور
+                  بارنامه، اقدام به صدور گواهینامه بازرسی نماید.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">6)</div>
+                <div>
+                  شرکت بازرسی موظف است، بازرسي را در چهارچوب مجموعه مقررات ارزی
+                  بانک مرکزی جمهوری اسلامی ایران و طبق مندرجات قرارداد بازرسي و
+                  بر اساس حدود بازرسي تعيين شده در محل توليد، بسته بندي، انبار
+                  فروشنده، گمرك يا بندر مبداء انجام دهد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">7)</div>
+                <div>
+                  در صورتیکه کمیت، کیفیت و سایر مشخصات کالا در محدوده رواداری
+                  مجاز طبق استانداردها، روش های حرفه¬ای بازرسی و حدود بازرسی
+                  تعیین شده باشد شرکت بازرسی موظف است گواهینامه بازرسی را صادر
+                  نماید.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">8)</div>
+                <div>
+                  شرکت بازرسی موظف است، گواهینامه بازرسی را به ذینفع
+                  اعتباراسنادی تحویل دهد مگر آنکه نحوه ی دیگری در اعتباراسنادی
+                  یا قرارداد بازرسی ذکر شده باشد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">9)</div>
+                <div>
+                  شرکت بازرسی موظف به عدم صدور گواهینامه بازرسی در موارد ذیل می
+                  باشد:
+                </div>
+              </div>
+            </div>
+            <div class="footer w-full pt-8 basis-28 shrink-0">
+              <div class="flex justify-around">
+                <div class="text-center">
+                  <div class="font-bold">
+                    شرکت بازرسی و خدمات آزمایشگاهی نورا آزما بین الملل
+                  </div>
+                  <div class="mt-1">مهر و امضا</div>
+                </div>
+                <div class="text-center">
+                  <div class="font-bold">خریدار</div>
+                  <div class="mt-1">مهر و امضا</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page" data-size="A4">
+          <div class="page-container flex h-full px-10 py-6 flex-col">
+            <div class="header w-full basis-40 shrink-0">
+              <div class="py-1 bg-[#195da4] text-white text-center">
+                فرم قرارداد بازرسی
+              </div>
+              <div class="flex pt-4">
+                <img
+                  class="h-24"
+                  src=" data:image/png;base64,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"
+                />
+              </div>
+            </div>
+            <div class="overflow-hidden text-justify grow">
+              <div class="number-item">
+                <div class="number-item-icon"></div>
+                <div class="ms-4">
+                  <div class="number-item">
+                    <div class="number-item-icon">-</div>
+                    <div>
+                      غیرمجاز یا غیرقانونی بودن موضوع بازرسی، عدم انطباق موضوع
+                      بازرسی با شرایط مندرج در قرارداد بازرسی، عدم همکاری
+                      فروشنده و یا تولیدکننده در انجام مطلوب و صحیح یک یا چند
+                      مورد از حدود و دامنه بازرسی توافق شده در مدارک خرید.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">10)</div>
+                <div>
+                  شرکت بازرسی موظف است، در صورت اثبات هرگونه مغایرت در مشخصات
+                  کالا، در حد عرف معمول و حدود بازرسی تعیین شده برای احقاق حقوق
+                  خریدار همکاری و اقدامات لازم را بعمل آورد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">11)</div>
+                <div>
+                  شرکت بازرسی متعهد است، گواهینامه COI صادره را در اسرع وقت در
+                  سامانه صادرات و واردات بارگذاری نماید.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">12)</div>
+                <div>
+                  کلیه اطلاعاتی که به وسیله طرفین قرارداد طی پست الکترونیکی
+                  (EMAIL)، دورنگار (فاکس) و بطور کلی از طریق وسایل الکترونیکی
+                  مبادله می شود بمنزله اطلاعیه کتبی بوده و قابل استفاده در مراجع
+                  مختلف و محاکم قضایی خواهد بود.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">13)</div>
+                <div>
+                  مجموع مسئولیت شرکت، هرگونه پیمانکاران فرعی یا کارکنان درگیر
+                  ارائه خدمات بازرسی (نمایندگان شرکت) در خصوص هرگونه ضرر و یا
+                  خسارت اثبات شده، معادل پنج (5) برابر دستمزد پرداخت شده بابت
+                  بازرسی (در صورتی که بخشی از کار دچار خسارت شده باشد، حداکثر 5
+                  برابر دستمزد بازرسی بخش خسارت دیده مدنظر قرار می گیرد) تا سقف
+                  000,15 یورو (پانزده هزار یورو) به میزان قصور معین شده توسط
+                  مرجع قانونی رسیدگی کننده می باشد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">14)</div>
+                <div>
+                  شرکت بازرسی در موارد زیر هیچگونه ضمانت و اظهارنظری انجام نمی
+                  دهد:
+                  <div class="number-item">
+                    <div class="number-item-icon">-</div>
+                    <div>
+                      صدور گزارش و گواهينامه بازرسي توسط شرکت بازرسی منحصراً
+                      حكايت از وضعيت كالا در هنگام انجام بازرسي و تا قبل از صدور
+                      بارنامه داشته و هر گونه خسارت وارده به كالا بعد از صدور
+                      بارنامه، ناشي از حمل و نقل يا تخليه و جابجايي، نحوه
+                      نگهداري و انبارداري، واكنش فيزيكي و شيميايي و یا شرايط جوي
+                      نامساعد به منزله مغايرت کالا به هنگام بازرسی محسوب نگرديده
+                      و شرکت بازرسی در قبال آن مسئوليتي نخواهد داشت.
+                    </div>
+                  </div>
+                  <div class="number-item">
+                    <div class="number-item-icon">-</div>
+                    <div>
+                      شرکت بازرسی خدمات ضمانت یا بیمه گری را انجام نمی دهد و نمی
+                      تواند مسئولیتی در قبال انجام چنین کاری داشته باشد.
+                    </div>
+                  </div>
+                  <div class="number-item">
+                    <div class="number-item-icon">-</div>
+                    <div>
+                      شرکت بازرسی هیچ گونه مسئولیتی در قبال حمل و کالاهایی که
+                      قبل از صدور گواهینامه حمل شده باشد، ندارد.
+                    </div>
+                  </div>
+                  <div class="number-item">
+                    <div class="number-item-icon">-</div>
+                    <div>
+                      شرکت بازرسی هیچ گونه مسئولیتی در قبال کیفیت کالا قبل از
+                      صدور گواهینامه، نخواهد داشت.
+                    </div>
+                  </div>
+                  <div class="number-item">
+                    <div class="number-item-icon">-</div>
+                    <div>
+                      شرکت بازرسی هیچ گونه مسئولیتی در قبال خسارتهای احتمالی از
+                      جمله از دست دادن سود، از دست دادن مشاغل آتی، از دست دادن
+                      تولید و یا / لغو قراردادهای منعقد شده توسط خریدار، نخواهد
+                      داشت.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">15)</div>
+                <div>
+                  شرکت بازرسی موظف است خریدار را از کار بازرسی ارجاعی به
+                  پیمانکار فرعی مطلع نماید.
+                </div>
+              </div>
+
+              <div class="font-bold mt-5">ماده 7) فسخ قرارداد</div>
+
+              <div class="number-item">
+                <div class="number-item-icon">1)</div>
+                <div>
+                  چنانچه خریدار پس از انعقاد قرارداد و پرداخت حق الزحمه با
+                  درخواست کتبی، خواهان لغو بازرسی گردد، فسخ قرارداد مطابق شرایط
+                  ذیل مورد پذیرش خواهد بود:
+                  <div class="number-item">
+                    <div class="number-item-icon">1-1-</div>
+                    <div>
+                      قبل از انجام بازرسی مبلغ 5% کل قرارداد به عنوان خسارات به
+                      شرکت قابل پرداخت می باشد.
+                    </div>
+                  </div>
+                  <div class="number-item">
+                    <div class="number-item-icon">2-1-</div>
+                    <div>
+                      در صورت انجام بازرسی و فسخ قرارداد مبلغ 60% قرارداد به
+                      شرکت قابل پرداخت می باشد.
+                    </div>
+                  </div>
+                  <div class="number-item">
+                    <div class="number-item-icon">3-1-</div>
+                    <div>
+                      در صورت انجام بازرسی و صدور گواهی مربوطه کل مبلغ قرارداد
+                      می بایست به شرکت پرداخت شده و قرارداد در این مرحله غیرقابل
+                      فسخ می باشد. درخواست کننده موظف است کل هزینه را حسب
+                      قرارداد، پرداخت و حق اعتراض و شکایت را از خود سلب نماید.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">2)</div>
+                <div>
+                  درصورت عدم انجام تعهدات به همکاری های لازم از جانب خریدار که
+                  منجر به توقف یا عدم امکان اجرای عملیات بازرسی و آزمون شود، این
+                  قرارداد توسط شرکت بازرسی قابل فسخ است و حق الزحمه پرداخت شده
+                  برای کار انجام شده تا آن زمان محسابه خواهد شد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">3)</div>
+                <div>
+                  در صورتی که تعداد نفر روز برای انجام بازرسی بیش از تخمین اولیه
+                  باشد و یا دامنه بازرسی تغییر یا افزایش پیدا کند، کارفرما موظف
+                  است حق الزحمه اضافی را پیش از شروع و یا ادامه بازرسی پرداخت
+                  نماید، در صورت عدم پرداخت به موقع، شرکت بازرسی می تواند بازرسی
+                  را لغو و مبلغ دریافتی را پس از کسر حق الزحمه کار انجام شده تا
+                  آن زمان، مسترد نماید.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">4)</div>
+                <div>
+                  فسخ به دلیل فورس ماژور (قوه قهریه) در این صورت طرفین از ایفای
+                  وظیفه و تعهداتی که واقعه فورس ماژور بر آن اثر گذاشته تا
+                  زمانیکه اثر آن متوفق گردد معاف خواهند بود.
+                </div>
+              </div>
+
+              <div class="font-bold mt-5">ماده 8) قیمت و صورتحساب</div>
+
+              <div class="number-item">
+                <div class="number-item-icon">1)</div>
+                <div>
+                  خریدار متعهد می شود که کلیه مبالغ بازرسی (شامل دستمزد، هزینه
+                  های آزمایشگاه، حمل ونقل نمونه، هزینه های اقامت و ایاب و ذهاب و
+                  ...) را قبل از صدور گزارش یا گواهینامه به شرکت پرداخت نماید یا
+                  مطابق قرارداد فی مابین تسویه حساب انجام شود.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">2)</div>
+                <div>
+                  خریدار نمی تواند با استناد به اختلاف، ادعای متقابل یا جبران
+                  خسارت علیه شرکت یا هرگونه مالیات یا هر مورد دیگری پرداخت خود
+                  ار معوق یا متوقف کند.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">3)</div>
+                <div>
+                  خریدار همچنین باید کلیه هزینه های ناشی از بازپرداخت معوقات
+                  ناشی از تاخیر در پرداخت خریدار را، از جمله حق الوکاله و سایر
+                  هزینه های قانونی را به شرکت بپردازد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">4)</div>
+                <div>
+                  در صورت بروز مشکلات پیش بینی نشده یا هزینه های فوق العاده
+                  مطابق با ارائه اسناد مثبته برای انجام خدمات، شرکت می ایست
+                  هزینه های مرتبط (شامل نفر / روز بازرسی
+                </div>
+              </div>
+            </div>
+            <div class="footer w-full pt-8 basis-28 shrink-0">
+              <div class="flex justify-around">
+                <div class="text-center">
+                  <div class="font-bold">
+                    شرکت بازرسی و خدمات آزمایشگاهی نورا آزما بین الملل
+                  </div>
+                  <div class="mt-1">مهر و امضا</div>
+                </div>
+                <div class="text-center">
+                  <div class="font-bold">خریدار</div>
+                  <div class="mt-1">مهر و امضا</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page" data-size="A4">
+          <div class="page-container flex h-full px-10 py-6 flex-col">
+            <div class="header w-full basis-40 shrink-0">
+              <div class="py-1 bg-[#195da4] text-white text-center">
+                فرم قرارداد بازرسی
+              </div>
+              <div class="flex pt-4">
+                <img
+                  class="h-24"
+                  src=" data:image/png;base64,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"
+                />
+              </div>
+            </div>
+            <div class="overflow-hidden text-justify grow">
+              <div class="number-item">
+                <div class="number-item-icon"></div>
+                <div class="ms-4">
+                  اضافه شده، اضافه کاری نظایر آن) را در صورتحساب خود درج نموده
+                  خریدار متعهد به پرداخت آن می باشد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">5)</div>
+                <div>
+                  در صورتیکه تعهدات مندرج در بند 1 این ماده توسط خریدار انجام
+                  نشود، شرکت حق تعلیق خدمات را برای خود محفوظ می دارد این گونه
+                  تعلیق خدمات به عنوان نقض تعهدات قراردادی شرکت تلقی نمی گردد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">6)</div>
+                <div>
+                  شرکت این حق را برای خود محفوظ می دارد که در صورت در نظر گرفتن
+                  وضعیت مالی خریدار، شرایط پرداخت پیش بینی شده در بند 1 این ماده
+                  را تغییر دهد.
+                </div>
+              </div>
+
+              <div class="font-bold mt-5">
+                ماده 9) قوانین قابل اجرا، صلاحیت و حل اختلافات
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">1)</div>
+                <div>
+                  این شرایط و مقررات کلی، مطابق قوانین جمهوری اسلامی می باشند
+                  مگر اینکه شرکت و خریدار به طور کتبی صراحتاً توافق دیگری داشته
+                  باشند.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">2)</div>
+                <div>
+                  هرگونه تفسیر درباره این &quot;شرایط و مقررات کلی&quot; بر عهده
+                  جامعه ممیزی و بازرسی ایران می باشد.
+                </div>
+              </div>
+
+              <div class="number-item">
+                <div class="number-item-icon">3)</div>
+                <div>
+                  اختلافات، مناقشات یا هرگونه ادعایی از سوی هر یک از طرفین اعم
+                  از خریدار، شرکت، فروشنده، خریدار و ... توسط کمیته داوری جامعه
+                  ممیزی و بازرسی ایران رسیدگی می شود و احکام صادره برای طرفین
+                  لازم الاتباع و لازم الاجراست.
+                </div>
+              </div>
+            </div>
+            <div class="footer w-full pt-8 basis-28 shrink-0">
+              <div class="flex justify-around">
+                <div class="text-center">
+                  <div class="font-bold">
+                    شرکت بازرسی و خدمات آزمایشگاهی نورا آزما بین الملل
+                  </div>
+                  <div class="mt-1">مهر و امضا</div>
+                </div>
+                <div class="text-center">
+                  <div class="font-bold">خریدار</div>
+                  <div class="mt-1">مهر و امضا</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

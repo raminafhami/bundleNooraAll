@@ -1,0 +1,176 @@
+<html dir="rtl" lang="fa-IR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>نامه صادره</title>
+    <!-- <link href="https://cdn.naitco.ir/fonts/b-nazanin/FontFace.css" rel="stylesheet" /> -->
+    <link href="https://cdn.naitco.ir/fonts/vazirmatn/non-latin/font-face.css" rel="stylesheet" />
+    <script src="https://cdn.naitco.ir/js/tailwindcss/tailwindcss-v3.4.5.min.js"></script>
+    <style>
+      * {
+        border-width: 0;
+      }
+
+      html,
+      body {
+        font-family:  "Vazirmatn";
+        print-color-adjust: exact;
+      }
+
+      .template {
+        background: white;
+      }   
+
+      .page table,
+      .page tbody,
+      .page tr,
+      .page th,
+      .page td {
+        border: 1px solid;
+        border-collapse: collapse;
+      }
+
+      .page th {
+        padding-block: 4px;
+        background-color: white;
+        font-weight: 400;
+      }
+
+      .page td {
+        padding: 2px 6px;
+      }
+
+      .page p:not(:last-child) {
+        margin-bottom: 6px;
+      }
+
+      .header,
+      .header-space {
+        height: 272px;
+      }
+
+      .footer,
+      .footer-space {
+        height: 240px;
+      }
+
+      /*.footer-space {
+        position: relative;
+        z-index: 999;
+      }*/
+
+      .header {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+      }
+
+      .footer {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+      }
+
+      @media print {
+        .template .page {
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <%
+    const digitsEn = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    const digitsFa = ["۰", "١", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+
+    function toPersianNum(text) {
+      let result = '';
+
+      for (let i = 0; i < text.length; i++) {
+        if (/^\d+$/.test(text.charAt(i))) {
+          result += digitsFa[digitsEn.indexOf(text.charAt(i))];
+        } else {
+          result += text.charAt(i);
+        }
+      }
+
+      return result;
+    }
+  %>
+
+  <body>
+    <div class="template">
+      <table class="w-full border-none" cellspacing="0" cellpadding="0">
+        <thead><tr><td>
+          <div class="header-space">&nbsp;</div>
+        </td></tr></thead>
+        
+        <tbody><tr><td class="relative z-[70]">
+          <div class="page pr-[92px] pl-[120px] text-[13px]/[22px] space-y-8">
+            <% if ((typeof LetterTo !== 'undefined' && LetterTo) || 
+            (typeof LetterSubject !== 'undefined' && LetterSubject)) { %>
+              <div class="font-bold space-y-0.5">
+                <% if (typeof LetterTo !== 'undefined' && LetterTo) { %><div><%= LetterTo %></div><% } %>
+                <% if (typeof LetterSubject !== 'undefined' && LetterSubject) { %><div>موضوع: <%= LetterSubject %></div><% } %>
+              </div>
+            <% } %>
+
+            <% if (typeof LetterContent !== 'undefined' && LetterContent) { %>
+              <div><%- LetterContent %></div>
+            <% } %>
+            
+            <div class="w-full h-8"></div>
+          </div>
+        </td></tr></tbody>
+        <tfoot><tr><td>
+          <div class="footer-space">
+            <div class="flex px-36 relative z-60">
+              <% if (typeof ReviewerPosition !== 'undefined' && ReviewerPosition
+                && typeof reviewer !== 'undefined' && reviewer
+                && typeof signature !== 'undefined' && signature) {
+              %>
+                <div class="relative mr-auto ml-8 mt-4 text-xs/5 space-y-1 text-center font-bold">
+                  <div>با تشکر</div>
+                  <div><%= ReviewerPosition %></div>
+                  <div><%= reviewer.name %></div>
+                  <div class="absolute translate-x-1/4 top-1/4 size-40">
+                    <img
+                      alt=""
+                      src="<%= signature %>"
+                      class=""
+                    />
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        </td></tr></tfoot>
+      </table>
+
+      <div class="header text-xs/5">
+        <header class="relative flex flex-col pr-[100px] pl-32">
+          <div class="mt-20 text-base text-center">به نام خدا</div>
+      
+          <div class="flex ml-8 mt-8 font-bold justify-end">
+            <div class="space-y-1">
+              <div>تاریخ: <%= typeof LetterDate !== 'undefined' && LetterDate ? toPersianNum(LetterDate) : '' %></div>
+              <div>شماره نامه: <%= typeof letterNo !== 'undefined' && letterNo ? toPersianNum(letterNo) : '' %></div>
+              <div>پیوست: <%= typeof LetterHasAttachments !== 'undefined' && LetterHasAttachments ? 'دارد' : 'ندارد' %></div>
+            </div>
+          </div>
+        </header>
+      </div>
+
+      <!-- <div class="footer">
+        &nbsp;
+      </div> -->
+
+      <div class="fixed top-1/2 -left-4 -translate-y-1/4 text-sm font-bold text-gray-400 -rotate-90">
+        تهیه شده توسط اتوماسیون
+      </div>
+    </div>
+  </body>
+</html>

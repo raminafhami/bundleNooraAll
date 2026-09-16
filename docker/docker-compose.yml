@@ -1,0 +1,151 @@
+name: noora
+services:
+  gateway:
+    image: nginx:stable-alpine
+    restart: unless-stopped
+    ports:
+      - "${BIND_IP:-0.0.0.0}:${FRONTEND_PORT:-3000}:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      frontend:
+        condition: service_healthy
+  frontend:
+    image: noora-frontend:${IMAGE_TAG:-1.0.0}
+    pull_policy: build
+    build:
+      context: ..
+      dockerfile: docker/frontend.Dockerfile
+      no_cache: true
+      args:
+        NODE_IMAGE: ${NODE_IMAGE:-node:22-bookworm-slim}
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-}
+        NEXT_PUBLIC_EXTERNAL_API_URL: ${NEXT_PUBLIC_EXTERNAL_API_URL:-/backend}
+        NEXT_PUBLIC_INTERNAL_API_URL: ${NEXT_PUBLIC_INTERNAL_API_URL:-http://backend:4000}
+        NEXT_PUBLIC_CAPTCHA_KEY: ${NEXT_PUBLIC_CAPTCHA_KEY:-}
+        NEXT_PUBLIC_SEPIDAR_SERVICE_CODE_IC: ${NEXT_PUBLIC_SEPIDAR_SERVICE_CODE_IC:-}
+        NEXT_PUBLIC_SEPIDAR_SERVICE_CODE_COI: ${NEXT_PUBLIC_SEPIDAR_SERVICE_CODE_COI:-}
+        NEXT_PUBLIC_SEPIDAR_SERVICE_CODE_SAMPLING: ${NEXT_PUBLIC_SEPIDAR_SERVICE_CODE_SAMPLING:-}
+    restart: unless-stopped
+    init: true
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000').then(r=>process.exit(r.status<500?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 5
+
+  backend:
+    image: noora-backend:${IMAGE_TAG:-1.0.0}
+    pull_policy: build
+    build:
+      context: ..
+      dockerfile: docker/backend.Dockerfile
+      no_cache: true
+      args:
+        NODE_IMAGE: ${NODE_IMAGE:-node:22-bookworm-slim}
+    env_file:
+      - path: backend.env
+      - path: backend.local.env
+        required: false
+    restart: unless-stopped
+    init: true
+    shm_size: 256mb
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4000').then(r=>process.exit(r.status<500?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      start_period: 90s
+      retries: 5
+    volumes:
+      - statics:/app/statics
+      - inspection-files:/app/inspection-files
+      - documents:/app/documents
+      - users-docs:/app/users-docs
+      - asset-requirements:/app/asset-requirements
+      - tickts:/app/tickts
+      - app-docs:/app/app-docs
+      - petty-cost:/app/assets/pettyCost
+      - petty-cash:/app/assets/pettyCash
+      - project-task:/app/assets/projectTask
+
+  mongo:
+    image: mongo:7.0.30
+    entrypoint: ["sh", "/opt/noora/mongo-entrypoint.sh"]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:?Set MONGO_ROOT_USERNAME in docker/.env}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:?Set MONGO_ROOT_PASSWORD in docker/.env}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE:-apk}
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+      - mongo-keyfile:/data/keyfile
+      - ./mongo-entrypoint.sh:/opt/noora/mongo-entrypoint.sh:ro
+      - ./mongo-healthcheck.js:/opt/noora/mongo-healthcheck.js:ro
+    healthcheck:
+      test:
+        - CMD
+        - mongosh
+        - --quiet
+        - /opt/noora/mongo-healthcheck.js
+      interval: 10s
+      timeout: 10s
+      start_period: 30s
+      retries: 20
+
+  redis:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  elasticsearch:
+    image: elasticsearch:8.14.3
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "true"
+      xpack.security.http.ssl.enabled: "false"
+      xpack.security.transport.ssl.enabled: "false"
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?Set ELASTIC_PASSWORD in docker/.env}
+      ES_JAVA_OPTS: ${ES_JAVA_OPTS:--Xms512m -Xmx512m}
+    restart: unless-stopped
+    volumes:
+      - elastic-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS -u \"elastic:$$ELASTIC_PASSWORD\" 'http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s' >/dev/null"]
+      interval: 15s
+      timeout: 10s
+      start_period: 60s
+      retries: 20
+
+volumes:
+  mongo-keyfile:
+  mongo-data:
+  redis-data:
+  elastic-data:
+  statics:
+  inspection-files:
+  documents:
+  users-docs:
+  asset-requirements:
+  tickts:
+  app-docs:
+  petty-cost:
+  petty-cash:
+  project-task:

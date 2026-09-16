@@ -1,0 +1,255 @@
+<html dir="rtl" lang="fa">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>پیش فاکتور</title>
+    <link href="https://cdn.naitco.ir/fonts/vazirmatn/non-latin/font-face.css" rel="stylesheet" />
+    <script src="https://cdn.naitco.ir/js/tailwindcss/tailwindcss-v3.4.5.min.js"></script>
+    <style>
+      * {
+        border-width: 0;
+      }
+
+      html,
+      body {
+        font-family: "Vazirmatn";
+        print-color-adjust: exact;
+      }
+
+      .template {
+        background: rgb(243, 244, 246);
+      }
+
+      .template .page {
+        overflow: hidden;
+        display: block;
+        margin: 0 auto;
+        font-size: 13px;
+        background-color: white;
+      }
+
+      .template .page:not(:last-of-type) {
+        border-bottom: 1px solid rgb(229, 231, 235);
+      }
+
+      .template .page[data-size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+      }
+
+      @media print {
+        .template .page {
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <%
+      const digitsEn = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+      const digitsFa = ["۰", "١", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"]
+      function toPersianNum(text) {
+        let result = '';
+        for (let i = 0; i < text.length; i++) {
+          if (/^\d+$/.test(text.charAt(i))) {
+            result += digitsFa[digitsEn.indexOf(text.charAt(i))]
+          } else {
+            result += text.charAt(i);
+          }
+        }
+        return result;
+      }
+    %>
+
+  <body>
+    <div class="template">
+      <div data-template="preinvoice">
+        <div class="page" data-size="A4">
+          <div class="flex px-10 py-8 leading-7 flex-col">
+            <div class="flex justify-between items-end">
+              <div class="w-24">
+                <img
+                  class="max-w-full"
+                  src="data:image/png;base64,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"
+                />
+              </div>
+              <div>تاریخ: <%= new Date().toLocaleDateString('fa-IR') %></div>
+            </div>
+            <div class="self-center">پیش فاکتور فروش کالا و خدمات</div>
+            <div class="border">
+              <div class="border-b">
+                <div class="border-b bg-gray-100 text-center">
+                  مشخصات فروشنده
+                </div>
+                <div class="px-4">
+                  <div class="grid grid-cols-12">
+                    <div class="col-span-5">
+                      نام فروشنده: بازرسی نورا آزما بین الملل
+                    </div>
+                    <div class="col-span-4">شماره اقتصادی: <%= toPersianNum('10300072206') %></div>
+                    <div class="col-span-3">شماره ثبت: <%= toPersianNum('620719') %></div>
+                    <div class="col-span-5">شناسه ملی: <%= toPersianNum('10300072206') %></div>
+                    <div class="col-span-4">کدپستی: <%= toPersianNum('1986855451') %></div>
+                    <div class="col-span-3">
+                      فکس: <span dir="ltr" class="text-right"><%= toPersianNum('021-91304500') %></span>
+                    </div>
+                    <div class="col-span-9">
+                      <%= toPersianNum('تهران، زعفرانیه، خ پسیان، نبش جامی شرقی، پ 28، ساختمان پیدایش، ط c، واحد c شمالی') %>
+                    </div>
+                    <div class="col-span-3">
+                      تلفن: <span dir="ltr" class="text-right"><%= toPersianNum('021-91304500') %></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="border-b">
+                <div class="border-b bg-gray-100 text-center">
+                  مشخصات خریدار
+                </div>
+                <div class="px-4">
+                  <div class="grid grid-cols-12">
+                    <div class="col-span-4">
+                      نام خریدار: <%= BuyerData.name %>
+                    </div>
+                    <div class="col-span-4">
+                      شماره اقتصادی: <%= toPersianNum(BuyerData.nationalCode) %>
+                    </div>
+                    <div class="col-span-4">شماره ثبت: <%= BuyerData.metadata?.registrationNo ? toPersianNum(BuyerData.metadata?.registrationNo) : '-' %></div>
+                    <div class="col-span-4">
+                      شناسه ملی/شماره ملی: <%= toPersianNum(BuyerData.nationalCode) %>
+                    </div>
+                    <div class="col-span-4">
+                      کدپستی: <%= toPersianNum(BuyerData.postalCode) %>
+                    </div>
+                    <div class="col-span-4">
+                      <div class="flex">تلفن: <%= toPersianNum(BuyerData.phoneNo) %></div>
+                    </div>
+                    <div class="col-span-full">
+                      نشانی: <%= toPersianNum(BuyerData.address) %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="">
+                <div class="border-b bg-gray-100 text-center">
+                  مشخصات کالا یا خدمات مورد معامله
+                </div>
+                <div class="">
+                  <table class="w-full border-collapse text-[13px]">
+                    <tbody>
+                      <tr class="border-b">
+                        <td class="w-1 border-e px-2 text-center">ردیف</td>
+                        <!-- <td class="border-e px-2 text-center">شناسه خدمت</td> -->
+                        <td class="border-e px-2 text-center">شماره پرونده</td>
+                        <td class="border-e px-2 text-center whitespace-nowrap">
+                          شرح کالا/خدمات
+                        </td>
+                        <td
+                          class="w-1 border-e px-2 text-center whitespace-nowrap"
+                        >
+                          تعداد/مقدار
+                        </td>
+                        <td class="border-e px-2 text-center">واحد</td>
+                        <td class="border-e px-2 text-center">مبلغ واحد</td>
+                        <td class="px-2 text-center">مبلغ کل</td>
+                      </tr>
+                      <tr class="border-b">
+                        <td class="border-e px-2 text-center"><%= toPersianNum('1') %></td>
+                        <!-- <td class="border-e px-2 text-center"></td> -->
+                        <td class="border-e px-2 text-center"><%= toPersianNum(caseNo) %></td>
+                        <td class="border-e px-2 text-center">
+                          نمونه برداری
+                        </td>
+                        <td class="border-e px-2 text-center"><%= toPersianNum('1') %></td>
+                        <td class="border-e px-2 text-center">مورد</td>
+                        <td class="border-e px-2 text-center">
+                          <span dir="ltr">
+                            <%= toPersianNum(InspectionFee.replace(/\B(?=(\d{3})+(?!\d))/g, ",")) %>
+                          </span>
+                        </td>
+                        <td class="px-2 text-center">
+                          <span dir="ltr">
+                            <%= toPersianNum(InspectionFee.replace(/\B(?=(\d{3})+(?!\d))/g, ",")) %>
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="border-e" colspan="5"></td>
+                        <td class="border-e border-b px-2 text-center">
+                          جمع کل
+                        </td>
+                        <td class="border-b px-2 text-center" colspan="2"></td>
+                      </tr>
+                      <tr>
+                        <td class="border-e" colspan="5"></td>
+                        <td class="border-e border-b px-2 text-center">
+                          مالیات و عوارض
+                        </td>
+                        <td class="border-b px-2 text-center" colspan="2">
+                          <span dir="ltr">
+                            <%= toPersianNum(InvoiceTax.replace(/\B(?=(\d{3})+(?!\d))/g, ",")) %>
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="border-e" colspan="5"></td>
+                        <td class="border-e px-2 text-center">مبلغ پرداختی</td>
+                        <td class="text-center" colspan="2">
+                          <div class="border-b">
+                            <span dir="ltr">
+                              <%= toPersianNum(InvoiceTotal.replace(/\B(?=(\d{3})+(?!\d))/g, ",")) %>
+                            </span>
+                          </div>
+                          <div>-</div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-12 border">
+              <div class="border-b">
+                <div class="px-4">شرایط و نحوه فروش: نقدی</div>
+              </div>
+              <div class="border-b">
+                <div class="flex px-4">
+                  <div>توضیحات:</div>
+                  <!-- prettier-ignore -->
+                  <div class="leading-6 ms-2 py-0.5 whitespace-pre-wrap">-</div>
+                </div>
+              </div>
+              <div class="border-b">
+                <div class="flex">
+                  <div class="w-1/2 h-32 px-4 border-e">
+                    مهر و امضای فروشنده
+                    <div class="w-20 ms-auto me-16">
+                      <img
+                        class="max-w-full brightness-[2.2]"
+                        src="data:image/png;base64,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"
+                      />
+                    </div>
+                  </div>
+                  <div class="w-1/2 h-32 px-4">مهر و امضای خریدار</div>
+                </div>
+              </div>
+              <div class="">
+                <div class="px-4">
+                  <div>
+                    توجه: پرداخت حق بیمه هر قرارداد بعهده واگذار کننده و یا
+                    خریدار می باشد.
+                  </div>
+                  <div>شماره شبا: <%= toPersianNum('IR820220031303117117546001') %></div>
+                  <div>شماره کارت: <%= toPersianNum('5029087001639031') %></div>
+                  <div>نزد بانک توسعه تعاون شرکت بازرسی نورا آزما بین الملل</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

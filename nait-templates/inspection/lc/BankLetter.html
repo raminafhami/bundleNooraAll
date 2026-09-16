@@ -1,0 +1,121 @@
+<html dir="rtl" lang="fa">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>نامه پذیرش بانک</title>
+    <link href="https://cdn.naitco.ir/fonts/vazirmatn/non-latin/font-face.css" rel="stylesheet" />
+    <script src="https://cdn.naitco.ir/js/tailwindcss/tailwindcss-v3.4.5.min.js"></script>
+    <style>
+      * {
+        border-width: 0;
+      }
+
+      html,
+      body {
+        font-family: "Vazirmatn";
+        print-color-adjust: exact;
+      }
+
+      .template {
+        background: rgb(243, 244, 246);
+      }
+
+      .template .page {
+        overflow: hidden;
+        display: block;
+        margin: 0 auto;
+        font-size: 13px;
+        background-color: white;
+      }
+
+      .template .page:not(:last-of-type) {
+        border-bottom: 1px solid rgb(229, 231, 235);
+      }
+
+      .template .page[data-size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+      }
+
+      @media print {
+        .template .page {
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <%
+      const digitsEn = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+      const digitsFa = ["۰", "١", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"]
+      function toPersianNum(text) {
+        let result = '';
+        for (let i = 0; i < text.length; i++) {
+          if (/^\d+$/.test(text.charAt(i))) {
+            result += digitsFa[digitsEn.indexOf(text.charAt(i))]
+          } else {
+            result += text.charAt(i);
+          }
+        }
+        return result;
+      }
+
+      function getGoodsDescriptions(goods) {
+        let result = '';
+        const goodsArr = goods.split(',');
+        for (let i = 0; i < goodsArr.length; i++) {
+          if (result !== '') {
+            result += '، ';
+          }
+          result += goodsArr[i];
+        }
+        return result;
+      }
+    %>
+
+  <body>
+    <div class="template">
+      <div data-template="bankLetter">
+        <div class="page" data-size="A4">
+          <div class="px-36 pt-14 text-base/8 tracking-tight">
+            <p class="text-base text-center">به نام خدا</p>
+
+            <div class="flex my-10 justify-end">
+              <div class="flex me-10 flex-col">
+                <p>
+                  تاریخ: <%= new Date().toLocaleDateString('fa-IR') %>
+                </p>
+                <p>شماره: <%= toPersianNum(caseNo + '/1') %></p>
+              </div>
+            </div>
+
+            <p class="my-5 text-lg font-bold text-center">
+              فرم نامه پذیرش بازرسی قبل از حمل
+            </p>
+
+            <p class="my-5">
+              ریاست محترم <%= CreditOpeningBankName %> شعبه <%= toPersianNum(CreditOpeningBankBranch) %>
+            </p>
+
+            <div class="text-justify">
+              <p class="indent-12">
+                  احتراماً، بدینوسیله این شرکت بازرسی و خدمات آزمایشگاهی نورا آزما بین الملل آمادگی خود را نسبت به انجام بازرسی قبل از حمل کالای <%= getGoodsDescriptions(GoodsDescriptions) %> متعلق به شرکت <%= Buyer.name %> موضوع پیش فاکتور شماره <%= toPersianNum(ProformaNo) %> مورخ <%= toPersianNum(ProformaDate) %> با رعایت ضوابط قانونی و مجموعه مقررات ارزی اعلام می نماید.
+              </p>
+              <p class="mt-2">
+                  همچنین تایید می گردد قرارداد بازرسی طبق ضوابط ابلاغی از سوی سازمان ملی استاندارد ایران منعقد شده و بازرسی قبل از حمل و صدور گواهی بازرسی نیز بر اساس قرارداد بازرسی و ضوابط مربوطه انجام شود.
+              </p>
+            </div>
+
+            <div class="flex mt-5 justify-end">
+              <div class="flex me-10 flex-col items-center">
+                <div>جواد مرادی</div>
+                <div>مدیرعامل</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

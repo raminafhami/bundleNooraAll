@@ -1,0 +1,65 @@
+<html dir="rtl" lang="fa-IR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>نامه صادره</title>
+    <!-- <link href="https://cdn.naitco.ir/fonts/b-nazanin/FontFace.css" rel="stylesheet" /> -->
+    <link href="https://cdn.naitco.ir/fonts/vazirmatn/non-latin/font-face.css" rel="stylesheet" />
+    <script src="https://cdn.naitco.ir/js/tailwindcss/tailwindcss-v3.4.5.min.js"></script>
+    <style>
+      * {
+        border-width: 0;
+      }
+
+      html,
+      body {
+        font-family:  "Vazirmatn";
+        /* font-family:  "B Nazanin", "Vazirmatn"; */
+        print-color-adjust: exact;
+      }
+
+      .template {
+        background: rgb(243, 244, 246);
+      }
+
+      .template .page {
+        /* font-family: "B Nazanin", "Vazirmatn" !important; */
+        overflow: hidden;
+        display: block;
+        margin: 0 auto;
+        font-size: 13px;
+        background-color: white;
+      }
+
+      .template .page:not(:last-of-type) {
+        border-bottom: 1px solid rgb(229, 231, 235);
+      }
+
+      .template .page[data-size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+      }
+
+      table,
+      table tr,
+      table th,
+      table td {
+        border: 1px solid #000;
+        border-collapse: collapse;
+      }
+
+      @media print {
+        .template .page {
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="template">
+      <div data-template="certificate"><%- LetterPages %></div>
+    </div>
+  </body>
+</html>

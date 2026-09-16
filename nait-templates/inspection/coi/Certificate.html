@@ -1,0 +1,385 @@
+<!-- prettier-ignore -->
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>COI Certificate</title>
+    <link href="https://cdn.naitco.ir/fonts/vazirmatn/non-latin/font-face.css" rel="stylesheet" />
+    <script src="https://cdn.naitco.ir/js/tailwindcss/tailwindcss-v3.4.5.min.js"></script>
+    <style>
+      * {
+        border-width: 0;
+      }
+
+      html,
+      body {
+        font-family: "Vazirmatn";
+        print-color-adjust: exact;
+      }
+
+      .template {
+        background: rgb(243, 244, 246);
+      }
+
+      .template .page {
+        overflow: hidden;
+        display: block;
+        margin: 0 auto;
+        background-color: white;
+      }
+
+      .template .page:not(:last-of-type) {
+        border-bottom: 1px solid rgb(229, 231, 235);
+      }
+
+      .template .page[data-size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+      }
+
+      @media print {
+        .template .page {
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="template">
+      <div class="page pl-[0.5cm] pr-8 pt-[0.5cm] pb-[2.5cm] text-[10px]/[14px]" data-size="A4">
+        <div>
+          <div class="flex">
+            <div class="w-24 font-bold">CERTIFICATE NO.</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow">
+              <%= CertificateIssueNo ? `NAIT${CertificateIssueNo}` : '-' %>
+            </div>
+          </div>
+          <div class="flex">
+            <div class="w-24 font-bold">ISSUE DATE</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow">
+              <%= CertificateIssueDate?.replaceAll('/', '-') || '-' %>
+            </div>
+          </div>
+          <div class="flex">
+            <div class="w-24 font-bold">EXPIRY DATE</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow">N/A</div>
+          </div>
+        </div>
+
+        <div class="my-3 text-lg font-bold text-center tracking-wide">
+          CERTIFICATE OF INSPECTION (COI)
+        </div>
+
+        <div class="pr-[3.5cm]">
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">P/I NO.</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= ProformaNo %></div>
+          </div>  
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">P/I DATE</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= ProformaDate.replaceAll('/', '-') %></div>
+          </div>
+
+          <div class="my-2"></div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">SAMPLING DATE</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= SamplingDate.replaceAll('/', '-') %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">TEST DATE</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow">
+              <%= `${TestDateStart.replaceAll('/', '-')} to
+              ${TestDateEnd.replaceAll('/', '-')}` %>
+            </div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">TEST ISSUANCE DATE</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow">
+              <%= TestIssuanceDate.replaceAll('/', '-') %>
+            </div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">LOADING DATE</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow">
+              <%= LoadingDate.replaceAll('/', '-') %>
+            </div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">INSPECTION DATE</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow">
+              <%= `${InspectionDateStart.replaceAll('/', '-')} to
+              ${InspectionDateEnd.replaceAll('/', '-')}` %>
+            </div>
+          </div>
+
+          <div class="my-2"></div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">IMPORTER</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= Importer %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">CONSIGNEE</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= Consignee %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">EXPORTER</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= Exporter %></div>
+          </div>
+
+          <% if (typeof Seller !== 'undefined') { %>
+            <div class="flex">
+              <div class="basis-44 shrink-0 font-bold">SELLER</div>
+              <div class="mx-3 font-bold">:</div>
+              <div class="grow"><%= Seller %></div>
+            </div>
+          <% } %>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">SHIPPER</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= Shipper %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">INSURED BY</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= InsuredBy %></div>
+          </div>
+
+          <div class="my-2"></div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">MANUFACTURER</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= Manufacturer %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">LAB NAME</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= LabName %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">BRAND</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= Brand %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">COUNTRY OF ORIGIN</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= CountryOfOrigin %></div>
+          </div>
+
+          <div class="my-2"></div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">PLACE OF INSPECTION</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= InspectionPlace %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">PLACE OF TESTING</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= TestingPlace %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">INSPECTOR NAME</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= InspectorName %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">L/C No.</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= LcNo %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">PORT OF ENTRY</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= PortOfEntry %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">SERIAL/CODE NUMBER OF GOODS</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow whitespace-pre-line"><%= GoodsSerialNos %></div>
+          </div>
+
+          <div>
+            <table class="w-full border-2 border-black text-[10px]/[14px] border-collapse">
+              <colgroup>
+                <col class="w-7" />
+                <col class="w-14" />
+                <col class="w-14" />
+                <col class="w-14" />
+                <col class="w-14" />
+                <col class="w-48" />
+                <col class="w-24" />
+                <col class="w-36" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th class="px-1 border-2 border-black whitespace-pre-line">No.</th>
+                  <th class="px-1 border-2 border-black whitespace-pre-line">Quantity</th>
+                  <th class="px-1 border-2 border-black whitespace-pre-line">
+                    Type of<br />Packing/ISO<br />Unit Code
+                  </th>
+                  <th class="px-1 border-2 border-black whitespace-pre-line">
+                    NET<br />WEIGHT<br />(KG)
+                  </th>
+                  <th class="px-1 border-2 border-black whitespace-pre-line">
+                    GROSS<br />WEIGHT<br />(KG)
+                  </th>
+                  <th class="px-1 border-2 border-black whitespace-pre-line">
+                    Description of Goods<br />Subject to Inspection
+                  </th>
+                  <th class="px-1 border-2 border-black whitespace-pre-line">
+                    Declared<br />Custom Tariff No./<br />HSCode
+                  </th>
+                  <th class="px-1 border-2 border-black whitespace-pre-line">
+                    Standards/Normative Document:<br />Edition Date
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <% Goods.map((x, i) => { %>
+                <tr>
+                  <td class="px-1 border-2 border-black text-center">
+                    <%= i + 1 %>
+                  </td>
+                  <td class="px-1 border-2 border-black text-center">
+                    <%= x.qty %>
+                  </td>
+                  <td class="px-1 border-2 border-black text-center">
+                    <%= x.netWeight %>
+                  </td>
+                  <td class="px-1 border-2 border-black text-center">
+                    <%= x.grossWeight %>
+                  </td>
+                  <td class="px-1 border-2 border-black text-center">
+                    <%= x.packingOrUnit %>
+                  </td>
+                  <td class="px-1 border-2 border-black text-center">
+                    <%- x.description.replaceAll('\n', '<br />') %>
+                  </td>
+                  <td class="px-1 border-2 border-black text-center">
+                    <%- x.customTariffNoOrHsCode.replaceAll('\n', '<br />') %>
+                  </td>
+                  <td class="px-1 border-2 border-black text-center">
+                    <%- x.document.replaceAll('\n', '<br />') %>
+                  </td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            Original/Authenticated copy of Test Report dated <%= `${TestDateStart.replaceAll('/', '-')} to
+            ${TestDateEnd.replaceAll('/', '-')}` %>, MD/SD dated <%= TestIssuanceDate.replaceAll('/', '-') %>/ (Effective Date and
+            Term) and its Annexes are attached.
+          </div>
+
+          <div class="my-2"></div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">B/L NO.</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= BillOfLadingNo %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">B/L DATE</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= BillOfLadingDate.replaceAll('/', '-') %></div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">QTY TESTED OUT OF QTY SHIPPED</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow">
+              <%= `${QuantityTested} OUT OF ${QuantityShipped}${typeof Packing !== 'undefined' ? ` ${Packing}` : ''}` %>
+            </div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">GROSS WEIGHT</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= GrossWeight %> KGS</div>
+          </div>
+
+          <div class="flex">
+            <div class="basis-44 shrink-0 font-bold">NET WEIGHT</div>
+            <div class="mx-3 font-bold">:</div>
+            <div class="grow"><%= NetWeight %> KGS</div>
+          </div>
+
+          <div class="my-2"></div>
+
+          <div class="font-bold">REMARK:</div>
+          <div class="font-bold text-justify">
+            <%= `Place and date of inspection Located in ${InspectionPlace} on
+            ${InspectionDateStart.replaceAll('/', '-')} to
+            ${InspectionDateEnd.replaceAll('/', '-')} and the sample was
+            tested in the laboratory of the ${LabName}.
+            Concluded that the goods are in conformity with international
+            standards. Furthermore, we confirm that the test report is
+            acceptable and the laboratory found to be as qualified.` %>
+          </div>
+
+          <div class="my-2"></div>
+
+          <div class="font-bold">
+            THIS CERTIFICATE DOES NOT VERIFY THE PRICE OF SUBJECT CONSIGNMENT.
+          </div>
+
+          <div class="my-2"></div>
+
+          <div class="font-bold">CONCLUSION:</div>
+          <div class="text-justify font-bold"><%= CertificateConclusion %></div>
+
+          <div class="my-2"></div>
+
+          <div class="font-bold underline underline-offset-2">
+            NOORA AZMA INTERNATIONAL INSPECTION & TESTING CO. (NAIT)
+          </div>
+          <div class="font-bold">STAMP & SIGNATURE</div>
+          <div class="font-bold">NAME AND POSITION: HOOMAN ALAEI, TECHNICAL DEPUTY</div>
+          <div class="font-bold">DATE OF ISSUE: <%= CertificateIssueDate?.replaceAll('/', '-') || '-' %></div>
+
+          <div class="my-4"></div>
+
+          <div class="font-bold">FILE NO: <%= caseNo %></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
