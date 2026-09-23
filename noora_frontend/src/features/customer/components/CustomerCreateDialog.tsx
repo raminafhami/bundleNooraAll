@@ -265,6 +265,8 @@ function CustomerCreateDialog({
 				}
 			}
 
+			onClose(true);
+
 			router.push(
 				getDynamicUrl(`/dashboard/contacts/customers/${createdCustomer.id}`),
 			);
