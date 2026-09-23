@@ -42,6 +42,13 @@ export default function ConflictModal({
 	const [fileName, setFileName] = useState<string>();
 	const [file, setFile] = useState<any>([]);
 
+	useEffect(() => {
+		if (isShow) {
+			setConflict(data?.conflict ?? "");
+			setDescription(data?.description ?? "");
+		}
+	}, [isShow, data]);
+
 	async function updateConflict() {
 		setLoading(true);
 		try {
@@ -158,43 +165,10 @@ export default function ConflictModal({
 					size="7xl"
 					title="اطلاعات"
 					content={
-						<div className="mt-6 flex bg-gray-100">
+						<div className="mt-6 flex flex-col bg-gray-100">
+							<div className="flex">
 							{!readonly && (
 								<>
-									<div className="col-span-9 col-start-1 mx-2 flex flex-col items-center rounded-xl border-x-4 border-gray-100 bg-gray-100 p-1 py-[2rem]">
-										<input
-											value={conflict}
-											onChange={(event) => setConflict(event.target.value)}
-											className={`group relative mx-[1rem] mb-[1rem] mt-[1rem] w-[300px] text-ellipsis rounded rounded-2xl border-2 border-white bg-white px-2 py-2 pl-[2.8rem] pr-[.5rem] text-[.9rem] placeholder-gray-400 focus:border-blue-500 focus:text-black focus:outline-0`}
-											placeholder={`${
-												category === "ممیزی داخلی"
-													? "شرح عدم انطباق"
-													: "عنوان مغایرت"
-											}`}
-										/>
-										<textarea
-											value={description}
-											onChange={(event) => setDescription(event.target.value)}
-											className={`group relative mb-[1rem] max-h-[16rem] min-h-[4.5rem] w-[300px] text-ellipsis rounded-2xl border-r-2 border-none bg-white px-2 py-2 text-[13px] placeholder-gray-400 focus:bg-blue-300 focus:text-white focus:placeholder-white focus:outline-0`}
-											placeholder={"توضیحات"}
-										/>
-										<button
-											disabled={loading}
-											type="button"
-											onClick={() => !loading && updateConflict()}
-											className={`btn flex w-[300px] items-center justify-center ${
-												loading
-													? "bg-gray-400"
-													: "bg-blue-500 hover:bg-blue-700"
-											} max-h-[40px] cursor-pointer select-none rounded-md px-4 py-2 text-white`}
-										>
-											{loading ? (
-												<Loading className="item-center flex" size={"sm"} />
-											) : (
-												"ثبت"
-											)}
-										</button>
-									</div>
 									<div className="mx-2">
 										<div className="col-span-9 col-start-1 flex flex-col items-center rounded-xl border-x-4 border-gray-100 bg-gray-100 p-1 py-[2rem]">
 											<input
@@ -292,6 +266,45 @@ export default function ConflictModal({
 									</Panel.Root>
 								</Layout.Content>
 							</div>
+							</div>
+							{!readonly && (
+									<div className="mx-2 mb-4 flex w-full flex-col items-center rounded-xl border-x-4 border-gray-100 bg-gray-100 p-1 py-[2rem]">
+										<label className="mb-1 w-[300px] text-right text-[.85rem] text-gray-600">{category === "ممیزی داخلی" ? "شرح عدم انطباق" : "عنوان مغایرت"}</label>
+										<input
+											value={conflict}
+											onChange={(event) => setConflict(event.target.value)}
+											className={`group relative mx-[1rem] mb-[1rem] mt-[1rem] w-[300px] text-ellipsis rounded rounded-2xl border-2 border-white bg-white px-2 py-2 pl-[2.8rem] pr-[.5rem] text-[.9rem] placeholder-gray-400 focus:border-blue-500 focus:text-black focus:outline-0`}
+											placeholder={`${
+												category === "ممیزی داخلی"
+													? "شرح عدم انطباق"
+													: "عنوان مغایرت"
+											}`}
+										/>
+										<label className="mb-1 w-[300px] text-right text-[.85rem] text-gray-600">توضیحات</label>
+										<textarea
+											value={description}
+											onChange={(event) => setDescription(event.target.value)}
+											className={`group relative mb-[1rem] max-h-[16rem] min-h-[4.5rem] w-[300px] text-ellipsis rounded-2xl border-r-2 border-none bg-white px-2 py-2 text-[13px] placeholder-gray-400 focus:bg-blue-300 focus:text-white focus:placeholder-white focus:outline-0`}
+											placeholder={"توضیحات"}
+										/>
+										<button
+											disabled={loading}
+											type="button"
+											onClick={() => !loading && updateConflict()}
+											className={`btn flex w-[300px] items-center justify-center ${
+												loading
+													? "bg-gray-400"
+													: "bg-blue-500 hover:bg-blue-700"
+											} max-h-[40px] cursor-pointer select-none rounded-md px-4 py-2 text-white`}
+										>
+											{loading ? (
+												<Loading className="item-center flex" size={"sm"} />
+											) : (
+												"ثبت"
+											)}
+										</button>
+									</div>
+							)}
 						</div>
 					}
 					name="addCategory"
