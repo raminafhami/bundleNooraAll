@@ -125,7 +125,7 @@ export function AssetRequirementTable({
 					setTimeout(() => {
 						getData();
 						setFormAttribuite(undefined);
-						toast.success("بند جدید با موفقیت حذف شد!");
+						toast.success("بند جدید با موفقیت اضافه شد!");
 						setLoading(false);
 					}, 1000);
 				}
@@ -303,7 +303,7 @@ export function AssetRequirementTable({
 
 										<Table.Cell
 											data-tooltip-id={`${index}+${asset.title}`}
-											className={`overflow-hidden text-ellipsis whitespace-nowrap ${
+											className={`relative overflow-hidden text-ellipsis whitespace-nowrap ${
 												asset.paraNumber.length === 1
 													? ""
 													: asset.paraNumber.length === 3 ||

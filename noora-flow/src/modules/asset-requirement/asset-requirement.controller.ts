@@ -68,7 +68,10 @@ export class AssetRequirementController {
   ) {
     queryDto.populate = 'filesList';
     const result = [];
-    const data = await this.assetRequirementService.findAll(queryDto);
+    const data = await this.assetRequirementService.findAll(queryDto, {
+      locale: 'en',
+      numericOrdering: true,
+    });
     for (let assetReq of data.data) {
       const files = await this.assetRequirementService.findAssetFiles({
         assetId: assetReq.id,
