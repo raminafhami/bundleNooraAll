@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FaEye } from "react-icons/fa";
+import DatePicker from "react-multi-date-picker";
 import { toast } from "sonner";
 
 import DeleteAssetRequirementFile from "@/api/assetRequirement/deleteAssetRequirementFile";
@@ -38,6 +41,7 @@ export default function ConflictModal({
 }: ConflictModalProps) {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [conflict, setConflict] = useState<string>();
+	const [conflictDate, setConflictDate] = useState<any>();
 	const [description, setDescription] = useState<string>();
 	const [fileName, setFileName] = useState<string>();
 	const [file, setFile] = useState<any>([]);
@@ -45,6 +49,7 @@ export default function ConflictModal({
 	useEffect(() => {
 		if (isShow) {
 			setConflict(data?.conflict ?? "");
+			setConflictDate(data?.conflictDate ? new Date(data.conflictDate) : null);
 			setDescription(data?.description ?? "");
 		}
 	}, [isShow, data]);
@@ -55,6 +60,9 @@ export default function ConflictModal({
 			let response = await PutAssetRequirement({
 				id,
 				conflict,
+				conflictDate: conflictDate
+					? new Date(conflictDate).toISOString()
+					: null,
 				description,
 			});
 			if (response) {
@@ -278,6 +286,22 @@ export default function ConflictModal({
 														? "شرح عدم انطباق"
 														: "عنوان مغایرت"
 												}`}
+											/>
+										</div>
+										<div className="w-full text-right">
+											<label className="mb-1 block text-right text-[.85rem] text-gray-600">تاریخ</label>
+											<DatePicker
+												containerClassName="w-full"
+												calendar={persian}
+												locale={persian_fa}
+												inputClass="w-full text-right text-ellipsis rounded rounded-2xl border-2 border-white bg-white px-3 py-2 text-[.9rem] placeholder-gray-400 focus:border-blue-500 focus:text-black focus:outline-0"
+												placeholder="تاریخ"
+												calendarPosition="bottom-right"
+												onFocusedDateChange={(dateFocused, dateClicked) =>
+													setConflictDate(dateClicked?.toDate() ?? null)
+												}
+												value={conflictDate}
+												hideOnScroll
 											/>
 										</div>
 										<div className="w-full text-right">
