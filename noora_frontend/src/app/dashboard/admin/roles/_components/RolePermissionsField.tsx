@@ -13,6 +13,8 @@ import { Permission } from "@/identity/permissions/models/Permission";
 import { getPermissions } from "@/identity/permissions/services/getPermissions";
 import { Loading } from "@/ui/Loader";
 
+import { ROLE_PERMISSION_PAGES } from "./rolePermissionPages";
+
 interface RolePermissionsFieldProps {
 	value: string[];
 	onChange: (permissions: string[]) => void;
@@ -35,6 +37,11 @@ interface SubjectGroup {
 	permissions: Permission[];
 }
 
+interface PageGroup {
+	label: string;
+	subjectGroups: SubjectGroup[];
+}
+
 function subjectLabelOf(permission: Permission): string {
 	const [label] = permission.description.split(" - ");
 	return label || permission.subject;
@@ -55,28 +62,59 @@ export function RolePermissionsField({
 		})();
 	}, []);
 
-	const groups = useMemo<SubjectGroup[]>(() => {
+	const subjectGroupsBySubject = useMemo(() => {
+		const map = new Map<string, SubjectGroup>();
+		for (const permission of permissions ?? []) {
+			const existing = map.get(permission.subject);
+			if (existing) {
+				existing.permissions.push(permission);
+			} else {
+				map.set(permission.subject, {
+					subject: permission.subject,
+					label: subjectLabelOf(permission),
+					permissions: [permission],
+				});
+			}
+		}
+		for (const group of map.values()) {
+			group.permissions.sort(
+				(a, b) =>
+					ACTION_ORDER.indexOf(a.actions[0]) - ACTION_ORDER.indexOf(b.actions[0]),
+			);
+		}
+		return map;
+	}, [permissions]);
+
+	const pageGroups = useMemo<PageGroup[]>(() => {
 		if (!permissions) return [];
 
-		const bySubject = new Map<string, Permission[]>();
-		for (const permission of permissions) {
-			const list = bySubject.get(permission.subject) ?? [];
-			list.push(permission);
-			bySubject.set(permission.subject, list);
+		const used = new Set<string>();
+		const pages: PageGroup[] = ROLE_PERMISSION_PAGES.map((page) => {
+			const subjectGroups: SubjectGroup[] = [];
+			for (const subject of page.subjects) {
+				const group = subjectGroupsBySubject.get(subject);
+				if (group && !used.has(subject)) {
+					subjectGroups.push(group);
+					used.add(subject);
+				}
+			}
+			return { label: page.label, subjectGroups };
+		}).filter((page) => page.subjectGroups.length > 0);
+
+		const leftovers: SubjectGroup[] = [];
+		for (const group of subjectGroupsBySubject.values()) {
+			if (!used.has(group.subject)) {
+				leftovers.push(group);
+			}
+		}
+		leftovers.sort((a, b) => a.label.localeCompare(b.label, "fa"));
+
+		if (leftovers.length) {
+			pages.push({ label: "سایر", subjectGroups: leftovers });
 		}
 
-		return Array.from(bySubject.entries())
-			.map(([subject, list]) => ({
-				subject,
-				label: subjectLabelOf(list[0]),
-				permissions: [...list].sort(
-					(a, b) =>
-						ACTION_ORDER.indexOf(a.actions[0]) -
-						ACTION_ORDER.indexOf(b.actions[0]),
-				),
-			}))
-			.sort((a, b) => a.label.localeCompare(b.label, "fa"));
-	}, [permissions]);
+		return pages;
+	}, [permissions, subjectGroupsBySubject]);
 
 	function toggle(id: string, checked: boolean) {
 		if (checked) {
@@ -86,8 +124,17 @@ export function RolePermissionsField({
 		}
 	}
 
-	function toggleAllInGroup(group: SubjectGroup, checked: boolean) {
+	function toggleAllInSubject(group: SubjectGroup, checked: boolean) {
 		const ids = group.permissions.map((p) => p.id);
+		if (checked) {
+			onChange([...new Set([...value, ...ids])]);
+		} else {
+			onChange(value.filter((x) => !ids.includes(x)));
+		}
+	}
+
+	function toggleAllInPage(page: PageGroup, checked: boolean) {
+		const ids = page.subjectGroups.flatMap((g) => g.permissions.map((p) => p.id));
 		if (checked) {
 			onChange([...new Set([...value, ...ids])]);
 		} else {
@@ -101,49 +148,82 @@ export function RolePermissionsField({
 
 	return (
 		<Accordion type="multiple" className="rounded-lg border">
-			{groups.map((group) => {
-				const selectedCount = group.permissions.filter((p) =>
-					value.includes(p.id),
-				).length;
-				const allSelected = selectedCount === group.permissions.length;
+			{pageGroups.map((page) => {
+				const pageIds = page.subjectGroups.flatMap((g) =>
+					g.permissions.map((p) => p.id),
+				);
+				const pageSelectedCount = pageIds.filter((id) => value.includes(id)).length;
+				const pageAllSelected = pageSelectedCount === pageIds.length;
 
 				return (
-					<AccordionItem key={group.subject} value={group.subject}>
+					<AccordionItem key={page.label} value={page.label}>
 						<AccordionTrigger className="rightIcon px-4">
 							<span className="flex items-center gap-3">
 								<Checkbox
-									checked={allSelected}
+									checked={pageAllSelected}
 									onClick={(e) => e.stopPropagation()}
 									onCheckedChange={(checked) =>
-										toggleAllInGroup(group, checked === true)
+										toggleAllInPage(page, checked === true)
 									}
 								/>
-								<span>{group.label}</span>
-								{selectedCount > 0 && (
+								<span className="font-medium">{page.label}</span>
+								{pageSelectedCount > 0 && (
 									<span className="text-xs text-muted-foreground">
-										({selectedCount} از {group.permissions.length})
+										({pageSelectedCount} از {pageIds.length})
 									</span>
 								)}
 							</span>
 						</AccordionTrigger>
-						<AccordionContent className="grid grid-cols-2 gap-3 px-4 sm:grid-cols-4">
-							{group.permissions.map((permission) => (
-								<label
-									key={permission.id}
-									className="flex cursor-pointer items-center gap-2"
-								>
-									<Checkbox
-										checked={value.includes(permission.id)}
-										onCheckedChange={(checked) =>
-											toggle(permission.id, checked === true)
-										}
-									/>
-									<span>
-										{ACTION_LABELS[permission.actions[0]] ??
-											permission.actions[0]}
-									</span>
-								</label>
-							))}
+						<AccordionContent className="space-y-4 px-4">
+							{page.subjectGroups.map((group) => {
+								const selectedCount = group.permissions.filter((p) =>
+									value.includes(p.id),
+								).length;
+								const allSelected = selectedCount === group.permissions.length;
+
+								return (
+									<div
+										key={group.subject}
+										className="rounded-md bg-gray-50 p-3"
+									>
+										<label className="mb-2 flex cursor-pointer items-center gap-3">
+											<Checkbox
+												checked={allSelected}
+												onCheckedChange={(checked) =>
+													toggleAllInSubject(group, checked === true)
+												}
+											/>
+											<span className="text-sm text-gray-700">
+												{group.label}
+											</span>
+											{selectedCount > 0 && (
+												<span className="text-xs text-muted-foreground">
+													({selectedCount} از {group.permissions.length})
+												</span>
+											)}
+										</label>
+										<div className="grid grid-cols-2 gap-3 ps-8 sm:grid-cols-4">
+											{group.permissions.map((permission) => (
+												<label
+													key={permission.id}
+													className="flex cursor-pointer items-center gap-2"
+												>
+													<Checkbox
+														checked={value.includes(permission.id)}
+														onCheckedChange={(checked) =>
+															toggle(permission.id, checked === true)
+														}
+													/>
+													<span>
+														{ACTION_LABELS[permission.actions[0]] ??
+															permission.actions[0]}
+													</span>
+												</label>
+											))}
+										</div>
+									</div>
+								);
+							})}
 						</AccordionContent>
 					</AccordionItem>
 				);
