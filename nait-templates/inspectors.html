@@ -1,0 +1,109 @@
+<html dir="rtl" lang="fa-IR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>گزارش بازرسی</title>
+    <link href="https://cdn.naitco.ir/fonts/vazirmatn/non-latin/font-face.css" rel="stylesheet" />
+    <script src="https://cdn.naitco.ir/js/tailwindcss/tailwindcss-v3.4.5.min.js"></script>
+    <style>
+      * {
+        border-width: 0;
+      }
+
+      html,
+      body {
+        font-family: "Vazirmatn";
+        print-color-adjust: exact;
+      }
+
+      .page {
+        width: 21cm;
+        margin: 0 auto;
+        background-color: white;
+        font-size: 13px;
+      }
+
+      @media print {
+        .page {
+          margin: 0;
+        }
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <%
+    const p = typeof parameters !== 'undefined' && parameters ? parameters : {};
+    function val(v) {
+      return (v === undefined || v === null || v === '') ? '-' : v;
+    }
+  %>
+  <body>
+    <div class="page px-10 py-8 leading-7">
+      <div class="flex justify-between items-center border-b pb-4 mb-4">
+        <div class="text-lg font-bold">گزارش و تاییدیه بازرسی</div>
+        <div class="text-left">
+          <div>شماره پرونده: <%= val(typeof caseNo !== 'undefined' ? caseNo : p.InspectionCaseNo) %></div>
+          <div>تاریخ: <%= val(typeof date !== 'undefined' ? date : null) %></div>
+        </div>
+      </div>
+
+      <div class="border mb-4">
+        <div class="border-b bg-gray-100 text-center py-1">مشخصات پرونده</div>
+        <div class="px-4 py-2 grid grid-cols-2 gap-y-1">
+          <div>نوع بازرسی: <%= val(p.InspectionType) %></div>
+          <div>روش بازرسی: <%= val(p.InspectionMethod) %></div>
+          <div>نام خریدار: <%= val(p.BuyerName) %></div>
+          <div>فروشنده: <%= val(p.Seller) %></div>
+          <div>شرح کالا: <%= val(p.DescriptionOfGoods) %></div>
+          <div>حوزه کالا: <%= val(p.FieldOfGoods) %></div>
+          <div>شماره پروفرما: <%= val(p.ProformaNo) %></div>
+          <div>تاریخ پروفرما: <%= val(p.ProformaDate) %></div>
+          <div>نام تخلیه‌کننده: <%= val(p.DischargerName) %></div>
+          <div>تلفن تخلیه‌کننده: <span dir="ltr"><%= val(p.DischargerPhoneNo) %></span></div>
+          <div>وضعیت: <%= val(p.Status) %></div>
+          <div>شماره مرجع: <%= val(p.ReferenceNumber) %></div>
+        </div>
+      </div>
+
+      <div class="border mb-4">
+        <div class="border-b bg-gray-100 text-center py-1">نتیجه بازرسی</div>
+        <div class="px-4 py-2 grid grid-cols-2 gap-y-1">
+          <div>مقدار: <%= val(p.Quantity) %><% if (p.QuantityDes) { %> (<%= p.QuantityDes %>)<% } %></div>
+          <div>ظاهر کالا: <%= val(p.Appearence) %><% if (p.AppearenceDes) { %> (<%= p.AppearenceDes %>)<% } %></div>
+          <div>برچسب بازاریابی: <%= val(p.MarketingLabel) %><% if (p.MarketingLabelDes) { %> (<%= p.MarketingLabelDes %>)<% } %></div>
+          <div>آزمایش: <%= val(p.Testing) %><% if (p.TestingDes) { %> (<%= p.TestingDes %>)<% } %></div>
+          <div class="col-span-2">ارزیابی کلی: <%= val(p.InspectionOverall) %></div>
+          <% if (p.Description) { %>
+            <div class="col-span-2">توضیحات: <%= p.Description %></div>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-6 mt-10">
+        <div class="text-center">
+          <div class="mb-2">بازرس: <%= val(p.InspectorName) %></div>
+          <div class="border h-24 flex items-center justify-center">
+            <% if (p.InspectorAssignee) { %>
+              <img class="max-h-20" src="data:image/png;base64,<%= p.InspectorAssignee %>" />
+            <% } %>
+          </div>
+          <div class="mt-1 text-xs text-gray-500">امضای بازرس</div>
+        </div>
+        <div class="text-center">
+          <div class="mb-2">سرپرست / ناظر</div>
+          <div class="border h-24 flex items-center justify-center">
+            <% if (p.SupervisorAssignee) { %>
+              <img class="max-h-20" src="data:image/png;base64,<%= p.SupervisorAssignee %>" />
+            <% } %>
+          </div>
+          <div class="mt-1 text-xs text-gray-500">امضای سرپرست</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

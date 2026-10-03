@@ -1,0 +1,67 @@
+<html dir="rtl" lang="fa-IR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تصاویر بازرسی</title>
+    <link href="https://cdn.naitco.ir/fonts/vazirmatn/non-latin/font-face.css" rel="stylesheet" />
+    <script src="https://cdn.naitco.ir/js/tailwindcss/tailwindcss-v3.4.5.min.js"></script>
+    <style>
+      * {
+        border-width: 0;
+      }
+
+      html,
+      body {
+        font-family: "Vazirmatn";
+        print-color-adjust: exact;
+      }
+
+      .page {
+        width: 21cm;
+        margin: 0 auto;
+        background-color: white;
+        font-size: 13px;
+      }
+
+      .image-card {
+        break-inside: avoid;
+      }
+
+      .image-card img {
+        max-width: 100%;
+        max-height: 9cm;
+        object-fit: contain;
+      }
+
+      @media print {
+        .page {
+          margin: 0;
+        }
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page px-10 py-8">
+      <div class="text-lg font-bold border-b pb-4 mb-6">تصاویر بازرسی</div>
+
+      <% if (!images || images.length === 0) { %>
+        <div class="text-center text-gray-500 py-10">تصویری برای این پرونده ثبت نشده است.</div>
+      <% } else { %>
+        <div class="grid grid-cols-2 gap-6">
+          <% images.forEach(function(image) { %>
+            <div class="image-card border rounded p-2 text-center">
+              <img src="file://<%= image.path %>" />
+              <div class="mt-2 text-sm text-gray-700"><%= image.description || '-' %></div>
+            </div>
+          <% }); %>
+        </div>
+      <% } %>
+    </div>
+  </body>
+</html>
