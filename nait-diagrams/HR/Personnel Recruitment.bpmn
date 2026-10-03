@@ -254,15 +254,12 @@
       <bpmn:outgoing>Flow_1nz9crj</bpmn:outgoing>
       <bpmn:outgoing>Flow_1vvhcf9</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="WelcomeSms" name="پیامک خوشامدگویی">
+    <bpmn:serviceTask id="WelcomeSms" name="پیامک خوشامدگویی" camunda:delegateExpression="services.sendWelcomeSms">
       <bpmn:extensionElements>
-        <camunda:connector>
-          <camunda:inputOutput>
-            <camunda:inputParameter name="body.templateId">000</camunda:inputParameter>
-            <camunda:inputParameter name="body.phoneNumber">$[data.phoneNumber]</camunda:inputParameter>
-          </camunda:inputOutput>
-          <camunda:connectorId>send-sms</camunda:connectorId>
-        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="templateId">000</camunda:inputParameter>
+          <camunda:inputParameter name="phoneNumber">$[data.phoneNumber]</camunda:inputParameter>
+        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1nz9crj</bpmn:incoming>
       <bpmn:outgoing>Flow_1gbekvv</bpmn:outgoing>
