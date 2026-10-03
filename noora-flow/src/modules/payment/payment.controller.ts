@@ -49,7 +49,7 @@ export class PaymentController {
   async verify(@Body() body: any, @Req() req: Request, @Res() res: Response) {
     const payment = await this.paymentService.verify(body, req['mongoSession']);
 
-    const redirectUrl = `http://192.168.120.143:3000/payment/${encrypt(
+    const redirectUrl = `${this.appConfigService.frontendUrl}/payment/${encrypt(
       payment.invoiceId.toString(),
       this.appConfigService.invoiceCryptoSecretKey,
     )}?success=${payment.isVerified}`;
