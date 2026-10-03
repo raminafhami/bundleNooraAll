@@ -58,17 +58,7 @@ export class PaymentController {
   }
 
   @Get(':paymentId')
-  async get(@Param() paymentId: string) {
+  async get(@Param('paymentId') paymentId: string) {
     return this.paymentService.findById(paymentId);
-  }
-
-  @Post('test/test/etestse/df/etsfgs')
-  async test(@ActiveUser() activeUser: ActiveUserData) {
-    return this.paymentService.pay('67ab48a107372dff73c4455c', activeUser);
-  }
-
-  @Get(':paymentId')
-  async getOne(@Param('paymentId') paymentId: string) {
-    return await this.paymentService.findById(paymentId);
   }
 }
