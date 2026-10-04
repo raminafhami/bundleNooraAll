@@ -3,7 +3,7 @@
   <bpmn:collaboration id="Collaboration_1jnck8n">
     <bpmn:participant id="Participant_0mowiqh" processRef="Inspection_Case_SC" />
   </bpmn:collaboration>
-  <bpmn:process id="Inspection_Case_SC" name="قرارداد نظارت" isExecutable="true" camunda:candidateStarterGroups="ic-expert" camunda:historyTimeToLive="180">
+  <bpmn:process id="Inspection_Case_SC" name="قرارداد نظارت" isExecutable="true" camunda:candidateStarterGroups="ic-expert,ic-manager" camunda:historyTimeToLive="180">
     <bpmn:extensionElements>
       <camunda:properties>
         <camunda:property name="displayable" value="true" />

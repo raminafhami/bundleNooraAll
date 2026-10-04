@@ -3,7 +3,7 @@
   <bpmn:collaboration id="Collaboration_1vue8p5">
     <bpmn:participant id="Participant_0kn4bu5" processRef="Inspection_Case_Bank_COI" />
   </bpmn:collaboration>
-  <bpmn:process id="Inspection_Case_Bank_COI" name="بازرسی COI بانکی" isExecutable="true" camunda:candidateStarterGroups="ic-expert" camunda:historyTimeToLive="180">
+  <bpmn:process id="Inspection_Case_Bank_COI" name="بازرسی COI بانکی" isExecutable="true" camunda:candidateStarterGroups="ic-expert,ic-manager" camunda:historyTimeToLive="180">
     <bpmn:extensionElements>
       <camunda:properties>
         <camunda:property name="displayable" value="true" />
