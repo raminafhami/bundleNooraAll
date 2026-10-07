@@ -7,7 +7,7 @@
     <bpmn:extensionElements>
       <camunda:properties>
         <camunda:property name="stateList" value="[{&#34;name&#34;:&#34;review-by-qa&#34;,&#34;title&#34;:&#34;بررسی قرارداد (تضمین کیفیت)&#34;},{&#34;name&#34;:&#34;review-by-financial&#34;,&#34;title&#34;:&#34;بررسی قرارداد (مالی)&#34;},{&#34;name&#34;:&#34;review-by-personnel&#34;,&#34;title&#34;:&#34;بررسی قرارداد (پرسنل)&#34;},{&#34;name&#34;:&#34;review-by-ceo&#34;,&#34;title&#34;:&#34;بررسی قرارداد (مدیرعامل)&#34;},{&#34;name&#34;:&#34;finalized&#34;,&#34;title&#34;:&#34;نهایی شده&#34;},{&#34;name&#34;:&#34;review-by-hr&#34;,&#34;title&#34;:&#34;بررسی قرارداد (منابع انسانی)&#34;}]" />
-        <camunda:property name="displayable" value="false" />
+        <camunda:property name="displayable" value="true" />
         <camunda:property name="indicator" value="contract" />
       </camunda:properties>
     </bpmn:extensionElements>

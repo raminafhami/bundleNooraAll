@@ -3,7 +3,7 @@
   <bpmn:collaboration id="Collaboration_0yvcna6">
     <bpmn:participant id="Participant_1gddaw0" processRef="BoushehrSampling" />
   </bpmn:collaboration>
-  <bpmn:process id="BoushehrSampling" name="ثبت نمونه برداری (بوشهر)" isExecutable="true" camunda:candidateStarterGroups="bushehr" camunda:historyTimeToLive="180">
+  <bpmn:process id="BoushehrSampling" name="ثبت نمونه برداری (بوشهر)" isExecutable="true" camunda:candidateStarterGroups="bushehr,branch-manager" camunda:historyTimeToLive="180">
     <bpmn:extensionElements>
       <camunda:properties>
         <camunda:property name="displayable" value="true" />
