@@ -53,7 +53,7 @@
     <bpmn:sequenceFlow id="Flow_1d3qjvh" sourceRef="Gateway_0u6b2nj" targetRef="InvoiceIssuanceCreate">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.Check] == "false"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="InvoiceIssuanceReview" name="مالی" camunda:candidateGroups="finacial-expert">
+    <bpmn:userTask id="InvoiceIssuanceReview" name="مالی" camunda:candidateGroups="financial-expert">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="Check" type="string" />
