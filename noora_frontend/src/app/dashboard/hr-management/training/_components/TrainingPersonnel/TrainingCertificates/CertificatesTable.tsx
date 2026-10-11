@@ -14,6 +14,7 @@ import { Panel } from "@/ui/Panel";
 import { Table } from "@/ui/Table";
 import downloadBlob from "@/utils/downloadBlob";
 
+import { TrainingContext } from "../TrainingContext";
 import { CertificateDeleteDialog } from "./CertificateDeleteDialog";
 import { CertificatesContext } from "./CertificatesContext";
 
@@ -39,6 +40,7 @@ function getCertificateExtension(mimeType: string): string {
 export const CertificatesTable = memo(function CertificatesTable() {
 	const { personnel, certificates, removeCertificate } =
 		useContext(CertificatesContext);
+	const { removeExpertise } = useContext(TrainingContext);
 	const dialogs = useDialogs();
 
 	async function handleDownload(expertise: PersonnelExpertise) {
@@ -65,6 +67,10 @@ export const CertificatesTable = memo(function CertificatesTable() {
 
 		if (result) {
 			removeCertificate(expertise.id);
+
+			if (personnel) {
+				removeExpertise(personnel.id, expertise.id);
+			}
 		}
 	}
 
