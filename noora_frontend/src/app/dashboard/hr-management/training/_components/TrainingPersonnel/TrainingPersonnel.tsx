@@ -50,22 +50,6 @@ export function TrainingPersonnel() {
     []
   );
 
-  const handleExpertiseRemove = useCallback(
-    (personnelId: string, expertiseId: string) => {
-      setPersonnelInfo((previous) => [
-        ...previous.map((x) =>
-          x.id !== personnelId
-            ? x
-            : {
-                ...x,
-                expertises: x.expertises!.filter((y) => y.id !== expertiseId),
-              }
-        ),
-      ]);
-    },
-    []
-  );
-
   const handleExpertiseAdd = useCallback(
     (personnelId: string, expertise: PersonExpertise) => {
       setPersonnelInfo((previous) => [
@@ -93,7 +77,6 @@ export function TrainingPersonnel() {
           personnel: personnelInfo,
           addExpertise: handleExpertiseAdd,
           updateExpertise: handleExpertiseUpdate,
-          removeExpertise: handleExpertiseRemove,
         }}
       >
         <TrainingTable

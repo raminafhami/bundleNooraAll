@@ -40,7 +40,7 @@ function getCertificateExtension(mimeType: string): string {
 export const CertificatesTable = memo(function CertificatesTable() {
 	const { personnel, certificates, removeCertificate } =
 		useContext(CertificatesContext);
-	const { removeExpertise } = useContext(TrainingContext);
+	const { updateExpertise } = useContext(TrainingContext);
 	const dialogs = useDialogs();
 
 	async function handleDownload(expertise: PersonnelExpertise) {
@@ -69,7 +69,7 @@ export const CertificatesTable = memo(function CertificatesTable() {
 			removeCertificate(expertise.id);
 
 			if (personnel) {
-				removeExpertise(personnel.id, expertise.id);
+				updateExpertise(personnel.id, result);
 			}
 		}
 	}

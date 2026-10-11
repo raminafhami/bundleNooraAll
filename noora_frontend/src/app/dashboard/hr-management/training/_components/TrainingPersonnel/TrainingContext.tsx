@@ -10,7 +10,6 @@ interface TrainingContextType {
   personnel: Personnel[];
   addExpertise: (personnelId: string, expertise: PersonExpertise) => void;
   updateExpertise: (personnelId: string, expertise: PersonnelExpertise) => void;
-  removeExpertise: (personnelId: string, expertiseId: string) => void;
 }
 
 export const TrainingContext = createContext<TrainingContextType>(

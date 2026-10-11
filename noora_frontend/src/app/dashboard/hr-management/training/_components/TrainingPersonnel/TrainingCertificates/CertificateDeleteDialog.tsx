@@ -14,7 +14,9 @@ import {
 } from "@/components/ui/dialog";
 import { Spinner } from "@/components/ui/spinner";
 import { PersonnelExpertise } from "@/hrm/personnel/models/PersonnelExpertise";
-import { deletePersonnelExpertise } from "@/hrm/personnelExpertise/services/deletePersonnelExpertise";
+import { PersonnelExpertise as UpdatedPersonnelExpertise } from "@/hrm/personnelExpertise/models/PersonnelExpertise";
+import { PersonnelExpertiseStatus } from "@/hrm/personnelExpertise/models/PersonnelExpertiseStatus";
+import { updatePersonnelExpertise } from "@/hrm/personnelExpertise/services/updatePersonnelExpertise";
 
 function CertificateDeleteDialog({
 	payload,
@@ -23,10 +25,10 @@ function CertificateDeleteDialog({
 }: {
 	payload: PersonnelExpertise;
 	open: boolean;
-	onClose: (result?: boolean) => void;
+	onClose: (result?: UpdatedPersonnelExpertise) => void;
 }) {
 	return (
-		<Dialog open={open} onOpenChange={onClose}>
+		<Dialog open={open} onOpenChange={() => onClose()}>
 			<Conditional mount={open} delay>
 				<CertificateDeleteForm expertise={payload} onClose={onClose} />
 			</Conditional>
@@ -39,7 +41,7 @@ function CertificateDeleteForm({
 	onClose,
 }: {
 	expertise: PersonnelExpertise;
-	onClose: (result?: boolean) => void;
+	onClose: (result?: UpdatedPersonnelExpertise) => void;
 }) {
 	const [isPending, setIsPending] = useState<boolean>(false);
 
@@ -47,9 +49,11 @@ function CertificateDeleteForm({
 		try {
 			setIsPending(true);
 
-			await deletePersonnelExpertise(expertise.id);
+			const updated = await updatePersonnelExpertise(expertise.id, {
+				status: PersonnelExpertiseStatus.Unqualified,
+			});
 			toast.success("گواهینامه مورد نظر با موفقیت حذف شد.");
-			onClose(true);
+			onClose(updated);
 		} catch (err) {
 			console.error(err);
 			toast.error("خطای نامشخصی در هنگام حذف گواهینامه رخ داد.");
